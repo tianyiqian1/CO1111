@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title id="page_title">Here will be page title</title>
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+<script>
+
+    //---------------------------------------------------------------------------------------------------------------+++
+    // Definitions.
+
+    var PAGE_STATE = ''
+
+    async function getChallenges() {
+
+        // Obtains list of treasure hunt challenges.
+
+        // In order to handle request errors, IDE suggested to make this function async.
+
+        // The code is adapted from worksheet "CO1111-w15-lec-NetworkingAndProgrammableWeb.pdf".
+
+        // help:
+        // https://javascript.info/fetch
+        // https://dmitripavlutin.com/javascript-fetch-async-await/
+
+        // get json data, handle errors
+        const response = await fetch( URL_ROOT+"/list" );
+        if( response.status=="ERROR" ) {
+
+            // TODO
+            return;
+
+        } // if response
+        const DATA = await response.json();
+
+        // populate challenge list
+
+        let challengeList = document.getElementById("challenges");
+
+        let treasureHunts = DATA.treasureHunts;
+        console.log(treasureHunts);
+
+        // iterate treasure hunts
+        for( let iloc=0; iloc<treasureHunts.length; iloc+=1 ) {
+
+            // create empty list item
+            let item = document.createElement("li");
+            let link = ""
+
+            // create a link to start this treasure hunt
+            if( URL_ROOT==URL_ROOT_REAL ) {
+                // this is a real treasure hunt
+
+                // TODO
+
+                link = URL_ROOT + "/start?player=" + PLAYER_NAME + "&app=" + TEAM_NAME + "App&treasure-hunt-id=" + treasureHunts[iloc].uuid;
+                item.innerHTML = "<a class='app_navi' href='" + link + "'>" + treasureHunts[iloc].name + "</a>"
+            }
+            else {
+                // this is a test treasure hunt
+
+                link = URL_ROOT + "/start" //?player=" // player emulates errors
+                // help:
+                // https://www.tutorialspoint.com/JavaScript-function-in-href-vs-onClick
+                item.innerHTML = "<a class='app_navi' href='javascript:treasureHuntStartedEvent(\"" + link + "\")'>" + treasureHunts[iloc].name + "</a>"
+
+            }
+
+            // assemble
+            challengeList.appendChild( item );
+
+        } // for iloc
+
+    } // function getChallenges
+
+    function hideElements() {
+
+        // Function that hides currently displayed elements.
+
+        // help:
+        // https://www.w3schools.com/TAGS/att_hidden.asp
+
+        if( PAGE_STATE=='list' ) {
+
+            let challengeList = document.getElementById("challenges");
+            challengeList.hidden=true;
+
+            // remove all items from challenge list since they are reloaded each time page state
+            // is changed
+            // help:
+            // https://stackoverflow.com/questions/10750137/remove-all-li-from-ul
+            challengeList.replaceChildren();
+
+        }
+        else if( PAGE_STATE=='quiz' ) {
+
+            document.getElementById("quiz").hidden=true;
+            document.getElementById("navi_quiz").hidden=true;
+
+        }
+        else {
+
+            document.getElementById("page_h1").innerText = "not implemented element hiding for " + PAGE_STATE;
+
+        }
+
+    }
+
+    function showElements() {
+
+        // Function that shows and populates currently needed elements.
+
+        // help:
+        // https://www.w3schools.com/TAGS/att_hidden.asp
+
+        if( PAGE_STATE=='list' ) {
+
+            document.getElementById("page_title").innerText = 'Challenges';
+            document.getElementById("page_h1").innerText = 'All Challenges';
+
+            getChallenges();
+
+            document.getElementById("challenges").hidden=false;
+
+        }
+        else if( PAGE_STATE=='quiz' ) {
+
+            document.getElementById("page_title").innerText = 'Quiz';
+            document.getElementById("page_h1").innerText = 'Quiz';
+
+            document.getElementById("quiz").hidden=false;
+            document.getElementById("navi_quiz").hidden=false;
+
+        }
+        else {
+
+            document.getElementById("page_h1").innerText = "not implemented element showing for " + PAGE_STATE;
+
+        }
+
+    }
+
+    function changePageState( state ) {
+
+        // Changes page state and visible html elements.
+
+        hideElements()
+
+        PAGE_STATE = state;
+        setCookie( 'page_state', PAGE_STATE );
+
+        showElements();
+
+    } // function changePageState
+
+    function treasureHuntStartedEvent( link ) {
+
+        // Is triggered by clicking a treasure hunt.
+
+        alert('AAAAAAAAAAAA');
+
+        changePageState( 'quiz' );
+
+    } // function startTreasureHunt
+
+    function treasureHuntCancelledEvent( link ) {
+
+        // Is triggered by cancelling a treasure hunt.
+
+        alert('EEEEEEEe');
+
+        changePageState( 'list' );
+
+    } // function startTreasureHunt
+
+</script>
+
+<header id="app_header">Here will be navigation buttons</header>
+<h1 id="page_h1">Here will be page header1</h1>
+
+<ul id="challenges" hidden></ul>
+
+<form id="quiz" hidden>
+    <p id="app_quiz_text">The question text will be displayed here</p>
+    <p id="app_quiz_options">The question answer options will be displayed here</p>
+    <p><input type="submit" value="Submit" /></p>
+</form>
+
+<script src="navigation.js"></script>
+<script src="settings.js"></script>
+<script>
+
+    //---------------------------------------------------------------------------------------------------------------+++
+    // Actual code.
+
+    // help:
+    // https://www.w3schools.com/js/js_cookies.asp
+    // when the page reloads try to read previous page state
+    let page_state = getCookie( 'page_state' )
+    if( page_state=="" ) {
+        // no 'page_state' cookie exists
+        changePageState( 'list' )
+    }
+    else {
+        changePageState( page_state )
+    }
+
+</script>
+
+</body>
+</html>
+
+<!--
+
+copy from assignment: An “app.html” which realizes the Web App for the treasure hunt. You can use a single page for
+the whole app or multiple pages (e.g. individual pages for “start”, “question”, “leaderboard”
+etc.) but the starting page must be named “app.html”..
+You develop an implementation of a JavaScript-based Web App that allows you to play a full
+session of treasure hunt. It should have at minimum these features:
+ No major bugs/crashes/freezes,
+ It can be used on mobile devices,
+ Its UI is functional and features at least a basic level of usability,
+ It uses the provided Treasure Hunt API,
+ It allows to view the list of available treasure hunts,
+ It allows to start a new session and answer questions,
+ It informs the user when they finish the session and shows the score.
+
+2022.02.15
+created
+
+ -->
