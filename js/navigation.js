@@ -15,7 +15,7 @@ async function populateHeader() {
     let header = document.getElementById("app_header"); // object to populate
 
     // link to index.html
-    let bt_home = "<a class='app_navi' href='index.html'>Back to main page</a>";
+    let bt_home = "<a class='app_navi' href='./index.html'>Back to main page</a>";
 
     // link to reload page
     // help:
@@ -37,5 +37,5 @@ async function populateHeader() {
 
 populateHeader();
 
-// 2022.02.15
-// created
+// 2022.02.18
+// updated index.html link
