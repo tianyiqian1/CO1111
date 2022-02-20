@@ -1,0 +1,49 @@
+/*
+
+All styles for app.html.
+Some styles are inherited from main.css.
+
+The code is adapted from worksheet "co1111-worksheet-3-Intro to CSS.pdf".
+
+ */
+
+.app_navi {
+    /* all app navigation links*/
+    border: 1px darkgray solid;
+    border-radius: 5px;
+    padding: 5px;
+    text-decoration: none;
+    margin: 5px;
+}
+
+ul #challenges, li {
+    /*
+    all challenges list items
+    help:
+    https://www.w3schools.com/css/css_list.asp
+    */
+    list-style-type: none;
+    margin: 15px;
+}
+
+header #app_header {
+    /*this block is populated with app navigation - see "a #app_navi {...}"
+    */
+}
+
+h1 #page_h1 {
+    /*top-level header in app.html
+    */
+}
+
+form #quiz {
+    /*general quiz styling, actual elements will be added after finishing the javascript
+    */
+}
+
+/*
+
+2022.02.20
+separated from main.css for easier management
+
+*/

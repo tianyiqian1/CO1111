@@ -6,6 +6,12 @@ The code is adapted from worksheet "co1111-worksheet-3-Intro to CSS.pdf".
 
  */
 
+* {
+    /*overall style of all the elements*/
+    /*font-family: "Arial", Arial, sans-serif;*/
+    /*TODO*/
+}
+
 /* Add a black background color to the top navigation */
 .topnav {
     background-color: #333;
@@ -34,33 +40,10 @@ The code is adapted from worksheet "co1111-worksheet-3-Intro to CSS.pdf".
     color: white;
 }
 
-* {
-    /*font-family: "Arial", Arial, sans-serif;*/
-    /*TODO*/
-}
-
-.app_navi {
-    /* all app navigation links*/
-    border: 1px darkgray solid;
-    border-radius: 5px;
-    padding: 5px;
-    text-decoration: none;
-    margin: 5px;
-}
-
-ul #challenges, li {
-    /*
-    all challenges list items
-    help:
-    https://www.w3schools.com/css/css_list.asp
-    */
-    list-style-type: none;
-    margin: 15px;
-}
 
 /*
 
-2022.02.15
-created
+2022.02.20
+separated from app.css for easier management
 
 */
