@@ -5,15 +5,63 @@ Some styles are inherited from main.css.
 
 The code is adapted from worksheet "co1111-worksheet-3-Intro to CSS.pdf".
 
+help:
+https://stackoverflow.com/a/19814948
+vw (% of the viewport width)
+vh (% of the viewport height)
+vi (1% of the viewport size in the direction of the root element's inline axis)
+vb (1% of the viewport size in the direction of the root element's block axis)
+vmin (the smaller of vw or vh)
+vmax (the larger or vw or vh)
+1 v* is equal to 1% of the initial containing block.
+
  */
 
+* {
+
+    font-family: "Century Gothic", sans-serif;
+
+}
+
+body {
+
+    width: 100vmin;
+    margin: auto;
+
+    text-align: center;
+    font-size: 2em;
+    overflow-wrap: break-spaces;
+
+}
+
+#app_header {
+    /*this block is populated with app navigation - see "a #app_navi {...}"
+    */
+
+    display: block;
+
+}
 .app_navi {
+
     /* all app navigation links*/
-    border: 1px darkgray solid;
-    border-radius: 5px;
-    padding: 5px;
+
+    border: 0.1em darkgray solid;
+    border-radius: 0.3em;
+    padding: 0.3em;
     text-decoration: none;
-    margin: 5px;
+    margin: 0.5em;
+    font-size: 1em;
+
+    display: inline-block;
+
+}
+
+.quiz_navi {
+}
+.quiz_navi::hidden {
+
+    display: none;
+
 }
 
 ul #challenges, li {
@@ -26,10 +74,6 @@ ul #challenges, li {
     margin: 15px;
 }
 
-header #app_header {
-    /*this block is populated with app navigation - see "a #app_navi {...}"
-    */
-}
 
 h1 #page_h1 {
     /*top-level header in app.html
@@ -41,9 +85,112 @@ form #quiz {
     */
 }
 
+.app_quiz_item {
+
+}
+
+.app_quiz_item input {
+
+    border: 0.1em black solid;
+    padding: 0.3em;
+    text-decoration: none;
+    margin: 0.5em;
+    font-size: 2em;
+
+    display: inline-block;
+
+    text-transform: lowercase;
+
+    text-align: center;
+
+}
+
+.app_quiz_bool {
+
+    border: 0.1em black solid;
+    padding: 0.3em;
+    text-decoration: none;
+    margin: 0.5em;
+    font-size: 2em;
+
+    display: inline-block;
+
+    text-transform: uppercase;
+
+}
+
+.app_quiz_mcq {
+
+    border: 0.1em black solid;
+    padding: 0.3em;
+    text-decoration: none;
+    margin: 0.5em;
+    font-size: 2em;
+
+    display: inline-block;
+
+    text-transform: uppercase;
+
+}
+
+#quiz_submit, .unavailable {
+
+    /*
+    border: 0.1em black solid;
+    background-color: transparent;
+    color: rgba( 0,0,0, 0.5 );
+
+    padding: 0.3em;
+    text-decoration: none;
+    margin: 0.5em;
+    font-size: 2em;
+
+    display: block;
+
+    text-transform: uppercase;
+
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+    */
+
+}
+#quiz_submit {
+
+    background-color: black;
+    color: white;
+
+    padding: 0.3em;
+    text-decoration: none;
+    margin: 0.5em;
+    font-size: 2em;
+
+    display: block;
+
+    text-transform: uppercase;
+
+}
+
+@keyframes shake {
+    /*
+    The code is used from publicly available snippet https://www.w3schools.com/howto/howto_css_shake_image.asp
+    */
+
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
 /*
 
-2022.02.20
-separated from main.css for easier management
+2022.02.24
+updated
 
 */

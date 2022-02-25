@@ -8,15 +8,42 @@
 </head>
 <body>
 
-<header id="app_header">Here will be navigation buttons</header>
+<a id="#top">
+<header id="app_header"></header>
 <h1 id="page_h1">Here will be page header1</h1>
 
 <ul id="challenges" hidden></ul>
 
-<form id="quiz" hidden>
-    <p id="app_quiz_text">The question text will be displayed here</p>
-    <p id="app_quiz_options">The question answer options will be displayed here</p>
-    <p><input type="submit" value="Submit" /></p>
+<form id="quiz" class="app_quiz" hidden>
+
+    <p class="app_quiz_item" id="quiz_boolean">
+        <a class="app_quiz_bool" href='javascript:quizAnswerSaveEvent("true")'>True</a>
+        <a class="app_quiz_bool" href='javascript:quizAnswerSaveEvent("false")'>NO</a>
+    </p>
+
+    <p class="app_quiz_item" id="quiz_integer">
+        <input type="number" placeholder="integer" onkeyup="validateInteger()" min="0" />
+    </p>
+
+    <p class="app_quiz_item" id="quiz_number">
+        <input type="number" placeholder="number" onkeyup="validateNumber()" />
+    </p>
+
+    <p class="app_quiz_item" id="quiz_mcq">
+        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("a")'>A</a>
+        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("b")'>B</a>
+        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("c")'>C</a>
+        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("d")'>D</a>
+    </p>
+
+    <p class="app_quiz_item" id="quiz_text">
+        <input type="text" placeholder="text" onkeyup="validateText()" />
+    </p>
+
+    <p class="app_quiz_item">
+        <a id="quiz_submit">here will be the next question/skip button</a>
+    </p>
+
 </form>
 
 <script src="js/navigation.js"></script>
@@ -26,7 +53,63 @@
     //---------------------------------------------------------------------------------------------------------------+++
     // Definitions.
 
-    var PAGE_STATE = ''
+    var PAGE_STATE = undefined;
+
+    function validateInteger( v ) {
+
+        // Makes sure that value is an integer.
+        // The <input> definition already does so.
+
+        quizAnswerSaveEvent(v);
+    }
+
+    function validateNumber( v ) {
+
+        // Makes sure that value is a number.
+        // The <input> definition already does so.
+
+        quizAnswerSaveEvent(v);
+
+    }
+
+    function validateText( v ) {
+
+        // Makes sure that value is text.
+        // The <input> definition already does so.
+
+        quizAnswerSaveEvent(v);
+    }
+
+    function quizNextQuestionButton( enabled ) {
+
+        // Changes visual appearance and functionality of quiz submit/skip button.
+
+        let bt_submit = document.getElementById("quiz_submit");
+
+        if( enabled ) {
+
+            bt_submit.innerText = "Next question";
+            bt_submit.href = 'javascript:quizNextQuestionEvent()';
+            bt_submit.style.border = 'none';
+            bt_submit.style.backgroundColor = 'black';
+            bt_submit.style.color = 'white';
+            bt_submit.style.animation = 'none';
+            bt_submit.style.animationIterationCount = '0';
+
+        }
+        else {
+
+            bt_submit.innerText = "Can't skip this question";
+            bt_submit.href = '#bottom';
+            bt_submit.style.border = '0.1em black solid';
+            bt_submit.style.backgroundColor = 'transparent';
+            bt_submit.style.color = 'rgba( 0,0,0, 0.5 )';
+            bt_submit.style.animation = 'shake 0.5s';
+            bt_submit.style.animationIterationCount = 'infinite';
+
+        }
+
+    }
 
     async function getChallenges() {
 
@@ -55,7 +138,6 @@
         let challengeList = document.getElementById("challenges");
 
         let treasureHunts = DATA.treasureHunts;
-        console.log(treasureHunts);
 
         // iterate treasure hunts
         for( let iloc=0; iloc<treasureHunts.length; iloc+=1 ) {
@@ -90,6 +172,61 @@
 
     } // function getChallenges
 
+    async function getChallengeMetadata( link ) {
+
+        // Obtains relevant data from treasure hunt link.
+
+        // get json data, handle errors
+        const response = await fetch( link );
+        if( response.status=="ERROR" ) {
+
+            // TODO
+            return;
+
+        } // if response
+        const DATA = await response.json();
+
+        return DATA;
+
+    } // function startTreasureHunt
+
+    async function getQuestion() {
+
+        // Obtains current question.
+
+        // read necessary variables
+        var session = getCookie('session');
+
+        link = `${URL_ROOT}/question?session=${session}`;
+
+        // get json data, handle errors
+        const response = await fetch( link );
+        if( response.status=="ERROR" ) {
+
+            // TODO
+            return;
+
+        } // if response
+        const DATA = await response.json();
+
+        if( URL_ROOT==URL_ROOT_REAL ) {
+            // this is a real treasure hunt
+
+            console.log( DATA );
+
+        }
+        else {
+            // this is a test treasure hunt
+
+            // help:
+            // https://stackoverflow.com/questions/37555031/why-does-json-return-a-promise
+            // https://stackoverflow.com/questions/64164994/is-there-a-way-to-save-promise-result-as-a-variable
+            return DATA;
+
+        }
+
+    } // function getChallenges
+
     function hideElements() {
 
         // Function that hides currently displayed elements.
@@ -112,23 +249,26 @@
         else if( PAGE_STATE=='quiz' ) {
 
             document.getElementById("quiz").hidden=true;
-            document.getElementById("navi_quiz").hidden=true;
 
         }
         else {
 
             document.getElementById("page_h1").innerText = "not implemented element hiding for " + PAGE_STATE;
+            if( PAGE_STATE==undefined ) {
+                document.getElementById("page_h1").innerText = "not implemented element hiding for undefined";
+            }
 
         }
 
     }
 
-    function showElements() {
+    async function showElements() {
 
         // Function that shows and populates currently needed elements.
 
         // help:
         // https://www.w3schools.com/TAGS/att_hidden.asp
+        // https://www.tutorialstonight.com/javascript-string-format.php
 
         if( PAGE_STATE=='list' ) {
 
@@ -142,16 +282,85 @@
         }
         else if( PAGE_STATE=='quiz' ) {
 
-            document.getElementById("page_title").innerText = 'Quiz';
-            document.getElementById("page_h1").innerText = 'Quiz';
+            // download metadata
+            var DATA = await getQuestion();
+
+            // read necessary variables
+            let question_count = getCookie('question_count');
+            let question_iloc = parseInt( getCookie('question_iloc') );
+
+            document.getElementById("page_title").innerText = `[${question_iloc+1}/${question_count}] Question`;
+            document.getElementById("page_h1").innerHTML = `[${question_iloc+1}/${question_count}]<br>${DATA.questionText}`;
 
             document.getElementById("quiz").hidden=false;
-            document.getElementById("navi_quiz").hidden=false;
+
+            console.log( DATA );
+
+            let bt_submit = document.getElementById("quiz_submit");
+            if( DATA.canBeSkipped ) {
+                quizNextQuestionButton( true );
+            }
+            else {
+                quizNextQuestionButton( false );
+            }
+
+            let questionType = DATA.questionType.toLowerCase();
+            if( questionType=='boolean' ) {
+
+                document.getElementById("quiz_boolean").hidden=false;
+                document.getElementById("quiz_integer").hidden=true;
+                document.getElementById("quiz_number").hidden=true;
+                document.getElementById("quiz_mcq").hidden=true;
+                document.getElementById("quiz_text").hidden=true;
+
+            }
+            else if( questionType=='integer' ) {
+
+                document.getElementById("quiz_boolean").hidden=true;
+                document.getElementById("quiz_integer").hidden=false;
+                document.getElementById("quiz_number").hidden=true;
+                document.getElementById("quiz_mcq").hidden=true;
+                document.getElementById("quiz_text").hidden=true;
+
+            }
+            else if( questionType=='numeric' ) {
+
+                document.getElementById("quiz_boolean").hidden=true;
+                document.getElementById("quiz_integer").hidden=true;
+                document.getElementById("quiz_number").hidden=false;
+                document.getElementById("quiz_mcq").hidden=true;
+                document.getElementById("quiz_text").hidden=true;
+
+            }
+            else if( questionType=='mcq' ) {
+
+                document.getElementById("quiz_boolean").hidden=true;
+                document.getElementById("quiz_integer").hidden=true;
+                document.getElementById("quiz_number").hidden=true;
+                document.getElementById("quiz_mcq").hidden=false;
+                document.getElementById("quiz_text").hidden=true;
+
+            }
+            else if( questionType=='text' ) {
+
+                document.getElementById("quiz_boolean").hidden=true;
+                document.getElementById("quiz_integer").hidden=true;
+                document.getElementById("quiz_number").hidden=true;
+                document.getElementById("quiz_mcq").hidden=true;
+                document.getElementById("quiz_text").hidden=false;
+
+            }
+            else {
+                alert( `not implemented question type ${questionType}` );
+            }
 
         }
         else {
 
             document.getElementById("page_h1").innerText = "not implemented element showing for " + PAGE_STATE;
+            if( PAGE_STATE==undefined ) {
+                document.getElementById("page_h1").innerText = "not implemented element showing for undefined";
+            }
 
         }
 
@@ -161,34 +370,105 @@
 
         // Changes page state and visible html elements.
 
-        hideElements()
+        // default states when situation is unknown
+        if( state==undefined ) { state='list'; }
+        if( PAGE_STATE==undefined ) { PAGE_STATE=state; }
+
+        hideElements();
 
         PAGE_STATE = state;
         setCookie( 'page_state', PAGE_STATE );
 
         showElements();
+        populateHeader();
 
     } // function changePageState
 
-    function treasureHuntStartedEvent( link ) {
+    async function treasureHuntStartedEvent( link ) {
 
         // Is triggered by clicking a treasure hunt.
 
-        alert('AAAAAAAAAAAA');
+        let DATA = await getChallengeMetadata( link );
+
+        setCookie( "session", DATA.session );
+        setCookie( "question_count", DATA.numOfQuestions );
+        setCookie( "question_iloc", 0 );
 
         changePageState( 'quiz' );
 
     } // function startTreasureHunt
 
-    function treasureHuntCancelledEvent( link ) {
+    function treasureHuntCancelledEvent() {
 
         // Is triggered by cancelling a treasure hunt.
 
-        alert('EEEEEEEe');
+        // ask confirmation
+        // help:
+        // https://javascript.info/alert-prompt-confirm
 
-        changePageState( 'list' );
+        let retval = confirm( "Abandon challenge?" );
+        if( retval ) {
+
+            eraseCookie( "session" );
+            eraseCookie( "numOfQuestions" );
+
+            changePageState( 'list' );
+
+        }
 
     } // function startTreasureHunt
+
+    function quizAnswerSaveEvent( value ) {
+
+        // Saves chosen answer in a cookie
+        // and allows to proceed.
+
+        // help:
+        // https://www.w3schools.com/howto/howto_js_remove_class.asp
+
+        question_iloc = parseInt( getCookie('question_iloc') );
+        setCookie( `answer_${question_iloc}`, value );
+
+        // allow to proceed to next question
+        quizNextQuestionButton( true );
+
+        // scroll to bottom
+        // help:
+        // https://stackoverflow.com/questions/1145850/how-to-get-height-of-entire-document-with-javascript
+        window.scrollTo( $(window).height(), 0 );
+
+    } // function quizAnswerSaveEvent
+
+    function quizNextQuestionEvent() {
+
+        // Move to a next question.
+
+        // submit answer
+        question_iloc = parseInt( getCookie('question_iloc') );
+        value = getCookie( `answer_${question_iloc}` );
+        if( value==undefined ) { alert(`error reading cookie 'answer_${question_iloc}' value ?????`); }
+
+        // delete cookie answer
+        question_iloc = parseInt( getCookie('question_iloc') );
+        eraseCookie( `answer_${question_iloc}` );
+
+        // delete entered values
+        document.getElementById("quiz_integer").value='';
+        document.getElementById("quiz_number").value='';
+        document.getElementById("quiz_text").value='';
+
+        // move to a next question
+        question_iloc += 1;
+        setCookie( 'question_iloc', question_iloc );
+
+        // scroll to top
+        // help:
+        // https://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript
+        window.scrollTo( 0,0 );
+
+        showElements();
+
+    } // function quizNextQuestionEvent
 
     //---------------------------------------------------------------------------------------------------------------+++
     // Actual code.
@@ -196,17 +476,12 @@
     // help:
     // https://www.w3schools.com/js/js_cookies.asp
     // when the page reloads try to read previous page state
-    let page_state = getCookie( 'page_state' )
-    if( page_state=="" ) {
-        // no 'page_state' cookie exists
-        changePageState( 'list' )
-    }
-    else {
-        changePageState( page_state )
-    }
+
+    changePageState( getCookie('page_state') );
 
 </script>
 
+    <a id="#bottom">
 </body>
 </html>
 
@@ -225,7 +500,8 @@ session of treasure hunt. It should have at minimum these features:
  It allows to start a new session and answer questions,
  It informs the user when they finish the session and shows the score.
 
-2022.02.20
-added app.css reference
+2022.02.24
+added quiz layout
+navigation.js cannot be manipulated directly
 
  -->
