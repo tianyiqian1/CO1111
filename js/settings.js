@@ -44,10 +44,20 @@ function getCookie(cname) {
             return c.substring(name.length, c.length);
         }
     }
-    return "";
+    return undefined;
+
+}
+
+function eraseCookie(name) {
+
+    // Content-unaware function that deletes a cookie.
+
+    // The code is used from publicly available snippet https://stackoverflow.com/questions/2144386/how-to-delete-a-cookie.
+
+    document.cookie = name+'=; Max-Age=-99999999;';
 
 }
 
 //-------------------------------------------------------------------------------------------------------------------+++
-// 2022.02.18
-// moved to subfolder
+// 2022.02.24
+// added cookie deletion function
