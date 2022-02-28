@@ -22,11 +22,11 @@
     </p>
 
     <p class="app_quiz_item" id="quiz_integer">
-        <input type="number" placeholder="integer" onkeyup="validateInteger()" min="0" />
+        <input type="number" id="quiz_integer_inp" placeholder="integer" onkeyup="validateInteger()" min="0" />
     </p>
 
     <p class="app_quiz_item" id="quiz_number">
-        <input type="number" placeholder="number" onkeyup="validateNumber()" />
+        <input type="number" id="quiz_number_inp" placeholder="number" onkeyup="validateNumber()" />
     </p>
 
     <p class="app_quiz_item" id="quiz_mcq">
@@ -37,7 +37,7 @@
     </p>
 
     <p class="app_quiz_item" id="quiz_text">
-        <input type="text" placeholder="text" onkeyup="validateText()" />
+        <input type="text" id="quiz_text_inp" placeholder="text" onkeyup="validateText()" />
     </p>
 
     <p class="app_quiz_item">
@@ -80,7 +80,7 @@
         quizAnswerSaveEvent(v);
     }
 
-    function quizNextQuestionButton( enabled ) {
+    function enableQuizNextQuestionButton( enabled ) {
 
         // Changes visual appearance and functionality of quiz submit/skip button.
 
@@ -298,10 +298,10 @@
 
             let bt_submit = document.getElementById("quiz_submit");
             if( DATA.canBeSkipped ) {
-                quizNextQuestionButton( true );
+                enableQuizNextQuestionButton( true );
             }
             else {
-                quizNextQuestionButton( false );
+                enableQuizNextQuestionButton( false );
             }
 
             let questionType = DATA.questionType.toLowerCase();
@@ -426,11 +426,10 @@
         // help:
         // https://www.w3schools.com/howto/howto_js_remove_class.asp
 
-        question_iloc = parseInt( getCookie('question_iloc') );
-        setCookie( `answer_${question_iloc}`, value );
+        setCookie( 'answer', value );
 
         // allow to proceed to next question
-        quizNextQuestionButton( true );
+        enableQuizNextQuestionButton( true );
 
         // scroll to bottom
         // help:
@@ -444,22 +443,20 @@
         // Move to a next question.
 
         // submit answer
-        question_iloc = parseInt( getCookie('question_iloc') );
-        value = getCookie( `answer_${question_iloc}` );
-        if( value==undefined ) { alert(`error reading cookie 'answer_${question_iloc}' value ?????`); }
+        value = getCookie( 'answer' );
+        if( value==undefined ) { alert('error reading cookie "answer" value ?????'); }
 
         // delete cookie answer
-        question_iloc = parseInt( getCookie('question_iloc') );
-        eraseCookie( `answer_${question_iloc}` );
+        eraseCookie( 'answer' );
 
         // delete entered values
-        document.getElementById("quiz_integer").value='';
-        document.getElementById("quiz_number").value='';
-        document.getElementById("quiz_text").value='';
+        document.getElementById("quiz_integer_inp").value=null;
+        document.getElementById("quiz_number_inp").value=null;
+        document.getElementById("quiz_text_inp").value=null;
 
         // move to a next question
-        question_iloc += 1;
-        setCookie( 'question_iloc', question_iloc );
+        question_iloc = parseInt( getCookie('question_iloc') );
+        setCookie( 'question_iloc', question_iloc+1 );
 
         // scroll to top
         // help:
@@ -500,8 +497,9 @@ session of treasure hunt. It should have at minimum these features:
  It allows to start a new session and answer questions,
  It informs the user when they finish the session and shows the score.
 
-2022.02.24
-added quiz layout
-navigation.js cannot be manipulated directly
+2022.02.28
+changed complex per-answer cookies to a single cookie named 'answer'
+added object ids to form <input> items
+renamed quizNextQuestionButton -> enableQuizNextQuestionButton
 
  -->

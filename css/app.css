@@ -103,6 +103,12 @@ form #quiz {
 
     text-align: center;
 
+    /*
+    help:
+    https://stackoverflow.com/questions/57440112/input-fields-are-too-wide
+    */
+    width: 80%;
+
 }
 
 .app_quiz_bool {
