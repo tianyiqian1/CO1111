@@ -1,49 +1,80 @@
-/*
+/* Font family = "Open Sans" */
+/* Colour scheme = teal (#00b9bd & #f63700) and orange (#fb6900)*/
 
-Basic stylesheet.
-
-The code is adapted from worksheet "co1111-worksheet-3-Intro to CSS.pdf".
-
- */
-
-* {
-    /*overall style of all the elements*/
-    /*font-family: "Arial", Arial, sans-serif;*/
-    /*TODO*/
-}
-
-/* Add a black background color to the top navigation */
-.topnav {
-    background-color: #333;
+.top_nav {
+    background-color: #00b9bd;
     overflow: hidden;
+    border-radius: 0.3em;
 }
 
-/* Style the links inside the navigation bar */
-.topnav a {
+.top_nav a {
     float: left;
-    color: #f2f2f2;
+    color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    font-family: "Open Sans";
 }
 
-/* Change the color of links on hover */
-.topnav a:hover {
-    background-color: #ddd;
-    color: black;
+.top_nav a:hover {
+    background-color: #fb6900;
 }
 
-/* Add a color to the active/current link */
-.topnav a.active {
-    background-color: #04AA6D;
+.top_nav a.active {
+    background-color: #f63700;
+}
+
+body {
+    background-image: url("background image.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+h1 {
     color: white;
+    text-align: center;
+    font-family: "Open Sans";
 }
 
+p {
+    text-align: center;
+    font-family: "Open Sans";
+}
 
-/*
+button {
+    border: none;
+    background-color: #00b9bd;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Open Sans";
+    font-size: xxx-large;
+    letter-spacing: 10px;
+    margin: 4px 2px;
+    border-radius: 0.3em;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
 
-2022.02.20
-separated from app.css for easier management
+.button:hover {
+    background-color: #fb6900;
+    padding: 20px 40px;
+}
 
-*/
+.container {
+    height: 200px;
+    position: relative;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
