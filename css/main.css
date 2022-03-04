@@ -1,6 +1,18 @@
 /* Font family = "Open Sans" */
 /* Colour scheme = teal (#00b9bd & #f63700) and orange (#fb6900)*/
 
+@font-face {
+    font-family: "Open Sans Light";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: "Open Sans Bold";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+    font-weight: 700;
+}
+
 .top_nav {
     background-color: #00b9bd;
     overflow: hidden;
@@ -14,7 +26,7 @@
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
-    font-family: "Open Sans";
+    font-family: "Open Sans Light";
 }
 
 .top_nav a:hover {
@@ -35,12 +47,19 @@ body {
 h1 {
     color: white;
     text-align: center;
-    font-family: "Open Sans";
+    font-family: "Open Sans Light";
+}
+
+h2 {
+    color: white;
+    text-align: center;
+    font-family: "Open Sans Bold";
 }
 
 p {
+    color: white;
     text-align: center;
-    font-family: "Open Sans";
+    font-family: "Open Sans Light";
 }
 
 button {
@@ -51,7 +70,7 @@ button {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-family: "Open Sans";
+    font-family: "Open Sans Light";
     font-size: xxx-large;
     letter-spacing: 10px;
     margin: 4px 2px;
@@ -66,11 +85,18 @@ button {
 }
 
 .container {
-    height: 200px;
-    position: relative;
+    width: 100%;
+    float: left;
 }
 
-.center {
+.video-center-align {
+    max-width: 640px;
+    max-height: 320px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.center-align {
     margin: 0;
     position: absolute;
     top: 50%;
