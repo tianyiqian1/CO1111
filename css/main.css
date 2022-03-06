@@ -1,5 +1,9 @@
 /* Font family = "Open Sans" */
 /* Colour scheme = teal (#00b9bd & #f63700) and orange (#fb6900)*/
+@font-face {
+    font-family: "Open Sans";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+}
 
 @font-face {
     font-family: "Open Sans Light";
@@ -38,7 +42,7 @@
 }
 
 body {
-    background-image: url("background image.png");
+    background-image: url("background_image_night.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
