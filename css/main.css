@@ -45,7 +45,8 @@ body {
     background-image: url("background_image_night.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-size: cover;
+    background-position: center;
+    background-size: 2600px;
 }
 
 h1 {
