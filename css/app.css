@@ -15,54 +15,74 @@ vmin (the smaller of vw or vh)
 vmax (the larger or vw or vh)
 1 v* is equal to 1% of the initial containing block.
 
- */
+*/
+
+@font-face {
+    font-family: "Open Sans";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+}
+
+@font-face {
+    font-family: "Open Sans Light";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: "Open Sans Bold";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+    font-weight: 700;
+}
 
 * {
-
-    font-family: "Century Gothic", sans-serif;
-
+    font-family: "Open Sans Light";
 }
 
 body {
-
     width: 100vmin;
     margin: auto;
-
     text-align: center;
-    font-size: 2em;
-    overflow-wrap: break-spaces;
-
+    font-size: 17px;
+    /* overflow-wrap: break-spaces; */
 }
 
 #app_header {
-    /*this block is populated with app navigation - see "a #app_navi {...}"
+    /*
+    This block is populated with app navigation - see "a #app_navi {...}"
     */
-
     display: block;
-
 }
+
 .app_navi {
-
     /* all app navigation links*/
-
-    border: 0.1em darkgray solid;
-    border-radius: 0.3em;
-    padding: 0.3em;
+    border: none;
+    background-color: #00b9bd;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
     text-decoration: none;
-    margin: 0.5em;
-    font-size: 1em;
-
     display: inline-block;
+    font-family: "Open Sans Light";
+    font-size: larger;
+    margin: 4px 4px;
+    border-radius: 0.3em;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
 
+.app_navi:hover {
+    background-color: #fb6900;
 }
 
 .quiz_navi {
-}
-.quiz_navi::hidden {
 
+}
+
+/*
+.quiz_navi:hidden {
     display: none;
-
 }
+*/
 
 ul #challenges, li {
     /*
@@ -90,13 +110,12 @@ form #quiz {
 }
 
 .app_quiz_item input {
-
     border: 0.1em black solid;
     padding: 0.3em;
     text-decoration: none;
     margin: 0.5em;
     font-size: 2em;
-
+    background-color: white;
     display: inline-block;
 
     text-transform: lowercase;
@@ -108,11 +127,9 @@ form #quiz {
     https://stackoverflow.com/questions/57440112/input-fields-are-too-wide
     */
     width: 80%;
-
 }
 
 .app_quiz_bool {
-
     border: 0.1em black solid;
     padding: 0.3em;
     text-decoration: none;
@@ -122,21 +139,18 @@ form #quiz {
     display: inline-block;
 
     text-transform: uppercase;
-
 }
 
 .app_quiz_mcq {
-
     border: 0.1em black solid;
     padding: 0.3em;
     text-decoration: none;
     margin: 0.5em;
     font-size: 2em;
-
+    background-color: white;
     display: inline-block;
 
     text-transform: uppercase;
-
 }
 
 #quiz_submit, .unavailable {
@@ -162,7 +176,7 @@ form #quiz {
 }
 #quiz_submit {
 
-    background-color: black;
+    background-color: #f63700;
     color: white;
 
     padding: 0.3em;
