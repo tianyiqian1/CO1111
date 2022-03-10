@@ -1,5 +1,5 @@
 /* Font family = "Open Sans" */
-/* Colour scheme = teal (#00b9bd & #f63700) and orange (#fb6900)*/
+/* Colour scheme = teal (#00b9bd), dark teal (#f63700) and orange (#fb6900) */
 @font-face {
     font-family: "Open Sans";
     src: url("OpenSans-VariableFont_wdth,wght.ttf");
@@ -17,8 +17,26 @@
     font-weight: 700;
 }
 
+/* Dark mode work in progress */
+/*
+* {
+    --main_colour_light: #00b9bd;
+    --accent_colour1_light: #fb6900;
+    --accent_color2_light: #f63700;
+
+    --main_colour_dark: #00686b;
+    --accent_color1_dark: #6b2c00;
+    --accent_color2_dark: #6b1700;
+}
+
+.theme-switch {
+    --background_image: url("background_image_day.png");
+
+}
+*/
+
 .top_nav {
-    background-color: #00b9bd;
+    background-color: var(--main_colour_light);
     overflow: hidden;
     border-radius: 0.3em;
 }
@@ -34,19 +52,23 @@
 }
 
 .top_nav a:hover {
-    background-color: #fb6900;
+    background-color: var(--accent_colour1_light);
 }
 
 .top_nav a.active {
-    background-color: #f63700;
+    background-color: var(--accent_color2_light);
+}
+
+.top_nav_right {
+    float: right;
 }
 
 body {
-    background-image: url("background_image_night.png");
+    background-image: url("background_image_day.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    background-size: 2600px;
+    background-size: 2700px;
 }
 
 h1 {
@@ -69,7 +91,7 @@ p {
 
 button {
     border: none;
-    background-color: #00b9bd;
+    background-color: var(--main_colour_light);
     color: white;
     padding: 16px 32px;
     text-align: center;
@@ -78,14 +100,14 @@ button {
     font-family: "Open Sans Light";
     font-size: xxx-large;
     letter-spacing: 10px;
-    margin: 4px 2px;
+    margin: 4px 4px;
     border-radius: 0.3em;
     transition-duration: 0.4s;
     cursor: pointer;
 }
 
 .button:hover {
-    background-color: #fb6900;
+    background-color: var(--accent_colour1_light);
     padding: 20px 40px;
 }
 
@@ -96,7 +118,7 @@ button {
 
 .video-center-align {
     max-width: 640px;
-    max-height: 320px;
+    max-height: 370px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -108,4 +130,9 @@ button {
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+}
+
+.ig-container {
+    display: flex;
+    justify-content: center;
 }
