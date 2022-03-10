@@ -14,6 +14,18 @@
 
 <ul id="challenges" hidden></ul>
 
+<form id="player" class="app_quiz" hidden>
+
+    <p class="app_quiz_item" id="player_text">
+        <input type="text" id="player_text_inp" placeholder="player name" onkeyup="playerNameCheckEvent()" />
+    </p>
+
+    <p class="app_quiz_item">
+        <a id="player_submit" href='javascript:playerNameSubmitEvent()'>Continue</a>
+    </p>
+
+</form>
+
 <form id="quiz" class="app_quiz" hidden>
 
     <p class="app_quiz_item" id="quiz_boolean">
@@ -55,28 +67,31 @@
 
     var PAGE_STATE = undefined;
 
-    function validateInteger( v ) {
+    function validateInteger() {
 
         // Makes sure that value is an integer.
         // The <input> definition already does so.
 
+        let v = document.getElementById('quiz_integer_inp').value;
         quizAnswerSaveEvent(v);
     }
 
-    function validateNumber( v ) {
+    function validateNumber() {
 
         // Makes sure that value is a number.
         // The <input> definition already does so.
 
+        let v = document.getElementById('quiz_number_inp').value;
         quizAnswerSaveEvent(v);
 
     }
 
-    function validateText( v ) {
+    function validateText() {
 
         // Makes sure that value is text.
         // The <input> definition already does so.
 
+        let v = document.getElementById('quiz_text_inp').value;
         quizAnswerSaveEvent(v);
     }
 
@@ -152,8 +167,10 @@
 
                 // TODO
 
-                link = URL_ROOT + "/start?player=" + PLAYER_NAME + "&app=" + TEAM_NAME + "App&treasure-hunt-id=" + treasureHunts[iloc].uuid;
-                item.innerHTML = "<a class='app_navi' href='" + link + "'>" + treasureHunts[iloc].name + "</a>"
+                let playerName = getCookie( 'player' );
+
+                link = URL_ROOT + "/start?player=" + playerName + "&app=" + TEAM_NAME + "App&treasure-hunt-id=" + treasureHunts[iloc].uuid;
+                item.innerHTML = "<a class='app_navi' href='javascript:treasureHuntStartedEvent(\"" + link + "\")'>" + treasureHunts[iloc].name + "</a>"
             }
             else {
                 // this is a test treasure hunt
@@ -213,6 +230,7 @@
             // this is a real treasure hunt
 
             console.log( DATA );
+            return DATA;
 
         }
         else {
@@ -225,7 +243,33 @@
 
         }
 
-    } // function getChallenges
+    }
+
+    async function sendAnswer() {
+
+        // Asks server whether the answer is correct.
+
+        // read necessary variables
+        var session = getCookie('session');
+        var answer = getCookie('answer');
+
+        link = `${URL_ROOT}/answer?session=${session}&answer=${answer}`;
+        console.log( link );
+
+        // get json data, handle errors
+        const response = await fetch( link );
+        if( response.status=="ERROR" ) {
+
+            // TODO
+            return;
+
+        } // if response
+        const DATA = await response.json();
+
+        console.log( DATA );
+        return DATA;
+
+    }
 
     function hideElements() {
 
@@ -246,9 +290,19 @@
             challengeList.replaceChildren();
 
         }
+        else if( PAGE_STATE=='player' ) {
+
+            document.getElementById("player").hidden=true;
+
+        }
         else if( PAGE_STATE=='quiz' ) {
 
             document.getElementById("quiz").hidden=true;
+
+        }
+        else if( PAGE_STATE=='leaderboard' ) {
+
+            // TODO
 
         }
         else {
@@ -278,6 +332,18 @@
             getChallenges();
 
             document.getElementById("challenges").hidden=false;
+
+        }
+        else if( PAGE_STATE=='player' ) {
+
+            // prompt player name input
+
+            document.getElementById("page_title").innerText = `Choose a player name`;
+            document.getElementById("page_h1").innerHTML = `Choose a player name:`;
+
+            document.getElementById("player").hidden=false;
+
+            document.getElementById("player_text_inp").value=PLAYER_NAME;
 
         }
         else if( PAGE_STATE=='quiz' ) {
@@ -355,6 +421,12 @@
             }
 
         }
+        else if( PAGE_STATE=='leaderboard' ) {
+
+            document.getElementById("page_title").innerText = `Leaderboard`;
+            document.getElementById("page_h1").innerHTML = `Leaderboard`;
+
+        }
         else {
 
             document.getElementById("page_h1").innerText = "not implemented element showing for " + PAGE_STATE;
@@ -371,7 +443,7 @@
         // Changes page state and visible html elements.
 
         // default states when situation is unknown
-        if( state==undefined ) { state='list'; }
+        if( state==undefined ) { state='player'; }
         if( PAGE_STATE==undefined ) { PAGE_STATE=state; }
 
         hideElements();
@@ -386,9 +458,12 @@
 
     async function treasureHuntStartedEvent( link ) {
 
-        // Is triggered by clicking a treasure hunt.
+        // Is triggered by providing a player name after clicking a treasure hunt.'
 
         let DATA = await getChallengeMetadata( link );
+
+        console.log( 'AAAAAA' );
+        console.log( DATA );
 
         setCookie( "session", DATA.session );
         setCookie( "question_count", DATA.numOfQuestions );
@@ -412,7 +487,7 @@
             eraseCookie( "session" );
             eraseCookie( "numOfQuestions" );
 
-            changePageState( 'list' );
+            changePageState( 'player' );
 
         }
 
@@ -436,26 +511,38 @@
         // https://stackoverflow.com/questions/1145850/how-to-get-height-of-entire-document-with-javascript
         window.scrollTo( $(window).height(), 0 );
 
-    } // function quizAnswerSaveEvent
+    }
 
-    function quizNextQuestionEvent() {
+    async function quizNextQuestionEvent() {
 
         // Move to a next question.
-
-        // submit answer
-        value = getCookie( 'answer' );
-        if( value==undefined ) { alert('error reading cookie "answer" value ?????'); }
-
-        // delete cookie answer
-        eraseCookie( 'answer' );
 
         // delete entered values
         document.getElementById("quiz_integer_inp").value=null;
         document.getElementById("quiz_number_inp").value=null;
         document.getElementById("quiz_text_inp").value=null;
 
+        // is the answer correct?
+        if( URL_ROOT==URL_ROOT_REAL ) {
+
+            // help:
+            // https://codecyprus.org/th/guide#answer
+
+            var DATA = await sendAnswer();
+
+        }
+
+        eraseCookie( 'answer' );
+
         // move to a next question
         question_iloc = parseInt( getCookie('question_iloc') );
+        question_count = parseInt( getCookie('question_count') );
+        if( question_iloc+1 > question_count ) {
+            // answered all the questions
+            changePageState('leaderboard');
+            return;
+        }
+
         setCookie( 'question_iloc', question_iloc+1 );
 
         // scroll to top
@@ -466,6 +553,56 @@
         showElements();
 
     } // function quizNextQuestionEvent
+
+    function playerNameCheckEvent() {
+
+        // Scan player name input and save it in a cookie.
+
+        let name = document.getElementById( 'player_text_inp' ).value;
+        if( name.length > 0 ) {
+
+            setCookie( 'player', name );
+
+        }
+        else {
+
+            eraseCookie( 'player' );
+
+        }
+
+    } // function playerNameSaveEvent
+
+    function playerNameSubmitEvent() {
+
+        // Accept a saved player name and proceed to quiz.
+
+        // help:
+        // https://stackoverflow.com/questions/15889340/how-can-i-change-global-variables-in-javascript
+
+        // make sure player name is valid
+        let playerName = getCookie( 'player' );
+        if( playerName==undefined && URL_ROOT==URL_ROOT_TEST ) {
+            // nameless player is ok in test api
+            setCookie( 'player', '' );
+        }
+        else if( playerName==undefined && URL_ROOT==URL_ROOT_REAL ) {
+            // nameless player is not ok in real api
+            alert( 'please provide a player name' );
+            return;
+        }
+
+        // delete entered values
+        document.getElementById('player_text_inp').value=null;
+
+        // start the actual hunt
+        changePageState( 'list' );
+
+        // scroll to top
+        // help:
+        // https://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript
+        window.scrollTo( 0,0 );
+
+    } // function playerNameSubmitEvent
 
     //---------------------------------------------------------------------------------------------------------------+++
     // Actual code.
