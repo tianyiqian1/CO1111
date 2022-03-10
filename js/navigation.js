@@ -23,7 +23,7 @@ async function populateHeader() {
     let bt_reload = `<a class='app_navi' href='${window.location.href}'>Reload</a>`;
 
     let bt_stop = "";
-    if( PAGE_STATE=='quiz' ) {
+    if( PAGE_STATE=='quiz' || PAGE_STATE=='leaderboard' ) {
         // link to abandon challenge
         // help:
         // https://www.tutorialspoint.com/JavaScript-function-in-href-vs-onClick
