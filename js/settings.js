@@ -6,13 +6,13 @@
 // https://codecyprus.org/th/testing
 
 const TEAM_NAME = "exampleTeam"; // prefixes/postfixes are appended automatically
-const PLAYER_NAME = ""; //TEAM_NAME;
+const PLAYER_NAME = ""; //TEAM_NAME; // default value for player name input
 const URL_ROOT_REAL = "https://codecyprus.org/th/api" // is appended automatically
 const URL_ROOT_TEST = "https://codecyprus.org/th/test-api" // is appended automatically
 const COOKIE_EXPIRY_DAYS = 20;
 
 // select current mode
-var URL_ROOT = URL_ROOT_TEST; // i will use URL_ROOT for all requests
+var URL_ROOT = URL_ROOT_REAL; // i will use URL_ROOT for all requests
 
 function setCookie( cookieName, cookieValue, expireDays=COOKIE_EXPIRY_DAYS ) {
 
