@@ -1,5 +1,16 @@
 /* Font family = "Open Sans" */
 /* Colour scheme = teal (#00b9bd), dark teal (#f63700) and orange (#fb6900) */
+
+* {
+    --main_colour_light: #00b9bd;
+    --accent_colour1_light: #f96800;
+    --accent_colour2_light: #f63700;
+
+    --main_colour_dark: #007e80;
+    --accent_colour1_dark: #fb6900;
+    --accent_colour2_dark: #d62f00;
+}
+
 @font-face {
     font-family: "Open Sans";
     src: url("OpenSans-VariableFont_wdth,wght.ttf");
@@ -17,28 +28,29 @@
     font-weight: 700;
 }
 
-/* Dark mode work in progress */
-* {
-    --main_colour_light: #00b9bd;
-    --accent_colour1_light: #f96800;
-    --accent_colour2_light: #f63700;
-
-    --main_colour_dark: #007e80;
-    --accent_colour1_dark: #fb6900;
-    --accent_colour2_dark: #d62f00;
+@media (prefers-color-scheme: light) {
+    .top_nav {background-color: var(--main_colour_light)}
+    .nav_button {background-color: var(--main_colour_light)}
+    .top_nav a:hover {background-color: var(--accent_colour1_light)}
+    .top_nav a:active {background-color: var(--accent_colour2_light)}
+    body {background-image: url("background_image_day.png")}
+    button {background-color: var(--main_colour_light)}
+    .button:hover {background-color: var(--accent_colour1_light)}
 }
 
-/*
-.theme-switch {
-    --background_image: url("background_image_day.png");
-
+@media (prefers-color-scheme: dark) {
+    .top_nav {background-color: var(--main_colour_dark)}
+    .nav_button {background-color: var(--main_colour_dark)}
+    .top_nav a:hover {background-color: var(--accent_colour1_dark)}
+    .top_nav a:active {background-color: var(--accent_colour2_dark)}
+    body {background-image: url("background_image_night.png")}
+    button {background-color: var(--main_colour_dark)}
+    .button:hover {background-color: var(--accent_colour1_dark)}
 }
-*/
 
 .top_nav {
-    background-color: var(--main_colour_dark);
     overflow: hidden;
-    border-radius: 0.3em;
+    border-radius: 2em;
 }
 
 .top_nav a {
@@ -51,24 +63,25 @@
     font-family: "Open Sans Light";
 }
 
-.top_nav a:hover {
-    background-color: var(--accent_colour1_dark);
-}
-
-.top_nav a.active {
-    background-color: var(--accent_colour2_dark);
+.nav_button {
+    border: none;
+    color: white;
+    padding: 1px 1px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Open Sans Light";
+    font-size: 30px;
+    border-radius: 1em;
+    transition-duration: 0.4s;
+    cursor: pointer;
 }
 
 .top_nav_right {
     float: right;
 }
 
-#div1 {
-    background-image: url("background_image_night.png");
-}
-
 body {
-    background-image: url("background_image_night.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -95,7 +108,6 @@ p {
 
 button {
     border: none;
-    background-color: var(--main_colour_dark);
     color: white;
     padding: 16px 32px;
     text-align: center;
@@ -105,29 +117,13 @@ button {
     font-size: xxx-large;
     letter-spacing: 10px;
     margin: 4px 4px;
-    border-radius: 0.3em;
+    border-radius: 1em;
     transition-duration: 0.4s;
     cursor: pointer;
 }
 
 .button:hover {
-    background-color: var(--accent_colour1_dark);
     padding: 20px 40px;
-}
-
-.nav_button {
-    border: none;
-    background-color: var(--main_colour_dark);
-    color: white;
-    padding: 1px 1px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-family: "Open Sans Light";
-    font-size: 30px;
-    border-radius: 0.3em;
-    transition-duration: 0.4s;
-    cursor: pointer;
 }
 
 .container {

@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title id="page_title">Here will be page title</title>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/app.css" />
 </head>
+
+<script src="https://kit.fontawesome.com/1f36b060ea.js" crossorigin="anonymous"></script>
+
 <body>
 
 <a id="#top"></a>
 
-<header id="app_header">
-
-</header>
+<header id="app_header"></header>
 
 <h1 id="page_h1">Here will be page header1</h1>
 
@@ -34,7 +36,7 @@
 
     <p class="app_quiz_item" id="quiz_boolean">
         <a class="app_quiz_bool" href='javascript:quizAnswerSaveEvent("true")'>True</a>
-        <a class="app_quiz_bool" href='javascript:quizAnswerSaveEvent("false")'>NO</a>
+        <a class="app_quiz_bool" href='javascript:quizAnswerSaveEvent("false")'>False</a>
     </p>
 
     <p class="app_quiz_item" id="quiz_integer">
@@ -109,8 +111,8 @@
 
             bt_submit.innerText = "Next question";
             bt_submit.href = 'javascript:quizNextQuestionEvent()';
-            bt_submit.style.border = 'none';
-            bt_submit.style.backgroundColor = 'black';
+            bt_submit.style.backgroundColor = '#00b9bd';
+            bt_submit.style.borderRadius = '1em'
             bt_submit.style.color = 'white';
             bt_submit.style.animation = 'none';
             bt_submit.style.animationIterationCount = '0';
@@ -118,11 +120,11 @@
         }
         else {
 
-            bt_submit.innerText = "Can't skip this question";
+            bt_submit.innerText = "Can't skip this question!";
             bt_submit.href = '#bottom';
-            bt_submit.style.border = '0.1em black solid';
-            bt_submit.style.backgroundColor = 'transparent';
-            bt_submit.style.color = 'rgba( 0,0,0, 0.5 )';
+            bt_submit.style.backgroundColor = '#f63700';
+            bt_submit.style.borderRadius = '1em'
+            bt_submit.style.color = 'white';
             bt_submit.style.animation = 'shake 0.5s';
             bt_submit.style.animationIterationCount = 'infinite';
 
