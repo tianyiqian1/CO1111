@@ -18,7 +18,6 @@
 }
 
 /* Dark mode work in progress */
-/*
 * {
     --main_colour_light: #00b9bd;
     --accent_colour1_light: #fb6900;
@@ -29,6 +28,7 @@
     --accent_color2_dark: #6b1700;
 }
 
+/*
 .theme-switch {
     --background_image: url("background_image_day.png");
 
