@@ -1,5 +1,37 @@
 # Notes
 
+Here is the record of team meetings and discussions.
+
+## 2022.03.10 14:05
+Attendance: *all* except *Konstantinos*.
+Topics:
+- overall design
+- compliance with functional requirements
+- roles and teamwork
+- upcoming presentation
+
+## 2022.02.20 10:58
+Attendance: *all*.
+Topics:
+- project management
+- mobile-friendliness
+- landing page
+- social media promotion
+
+## 2022.02.18 12:29
+Attendance: *all*.  
+Topics:
+- css
+- compliance with filename requirements
+- roles and teamwork
+
+## 2022.02.03 19:45
+Attendance: *all*.  
+Topics:
+- general requirements
+- assignment details and purpose
+- roles and teamwork
+
 <!--
 
 copy from assignment: A “notes.html” or “notes.md” page where you log your progress in the project. Ideally you will
