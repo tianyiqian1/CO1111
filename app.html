@@ -541,7 +541,7 @@
         // move to a next question
         question_iloc = parseInt( getCookie('question_iloc') );
         question_count = parseInt( getCookie('question_count') );
-        if( question_iloc+1 > question_count ) {
+        if( question_iloc+1 >= question_count ) {
             // answered all the questions
             changePageState('leaderboard');
             return;
