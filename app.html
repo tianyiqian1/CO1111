@@ -118,7 +118,6 @@
         }
         else {
 
-            setCookie( 'temp', bt_submit.href );
             bt_submit.innerText = "Can't skip this question";
             bt_submit.href = '#bottom';
             bt_submit.style.border = '0.1em black solid';
@@ -234,7 +233,6 @@
         if( URL_ROOT==URL_ROOT_REAL ) {
             // this is a real treasure hunt
 
-            console.log( DATA );
             return DATA;
 
         }
@@ -259,7 +257,6 @@
         var answer = getCookie('answer');
 
         link = `${URL_ROOT}/answer?session=${session}&answer=${answer}`;
-        console.log( link );
 
         // get json data, handle errors
         const response = await fetch( link );
@@ -271,7 +268,6 @@
         } // if response
         const DATA = await response.json();
 
-        console.log( DATA );
         return DATA;
 
     }
@@ -364,8 +360,6 @@
             document.getElementById("page_h1").innerHTML = `[${question_iloc+1}/${question_count}]<br>${DATA.questionText}`;
 
             document.getElementById("quiz").hidden=false;
-
-            console.log( DATA );
 
             let bt_submit = document.getElementById("quiz_submit");
             if( DATA.canBeSkipped ) {
@@ -467,9 +461,6 @@
 
         let DATA = await getChallengeMetadata( link );
 
-        console.log( 'AAAAAA' );
-        console.log( DATA );
-
         setCookie( "session", DATA.session );
         setCookie( "question_count", DATA.numOfQuestions );
         setCookie( "question_iloc", 0 );
@@ -498,6 +489,51 @@
 
     } // function startTreasureHunt
 
+    async function sendPlayerLocationEvent( pos ) {
+
+        // Sends player location to the server.
+
+        // Code is adapted from co1111-worksheet15b - Geolocation.pdf.
+
+        // read necessary variables
+        let session = getCookie('session');
+        let latitude = pos.coords.latitude;
+        let longitude = pos.coords.longitude;
+
+        let link = `${URL_ROOT}/location?session=${session}&latitude=${latitude}&longitude=${longitude}`;
+
+        // get json data, handle errors
+        const response = await fetch( link );
+        if( response.status=="ERROR" ) {
+
+            // TODO
+            return;
+
+        } // if response
+        const DATA = await response.json();
+
+        console.log( latitude );
+        console.log( longitude );
+        console.log( DATA );
+
+    }
+
+    function updatePlayerLocationEvent() {
+
+        // Requests player location and sends it to the server.
+
+        // Code is adapted from co1111-worksheet15b - Geolocation.pdf.
+
+        // foolcheck
+        if( !navigator.geolocation ) {
+            alert( "fatal error: the app won't work without geolocation" );
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition( sendPlayerLocationEvent );
+
+    }
+
     function quizAnswerSaveEvent( value ) {
 
         // Saves chosen answer in a cookie
@@ -521,6 +557,9 @@
     async function quizNextQuestionEvent( value=undefined ) {
 
         // Move to a next question.
+
+        // update location before submitting an answer
+        updatePlayerLocationEvent();
 
         // occasionally i can pass a value here directly from the user input prompt
         // thus skipping the quizAnswerSaveEvent()
