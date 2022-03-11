@@ -33,8 +33,8 @@
 <form id="quiz" class="app_quiz" hidden>
 
     <p class="app_quiz_item" id="quiz_boolean">
-        <a class="app_quiz_bool" href='javascript:quizAnswerSaveEvent("true")'>True</a>
-        <a class="app_quiz_bool" href='javascript:quizAnswerSaveEvent("false")'>NO</a>
+        <a class="app_quiz_bool" href='javascript:quizNextQuestionEvent(value="true")'>True</a>
+        <a class="app_quiz_bool" href='javascript:quizNextQuestionEvent(value="false")'>NO</a>
     </p>
 
     <p class="app_quiz_item" id="quiz_integer">
@@ -46,10 +46,10 @@
     </p>
 
     <p class="app_quiz_item" id="quiz_mcq">
-        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("a")'>A</a>
-        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("b")'>B</a>
-        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("c")'>C</a>
-        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("d")'>D</a>
+        <a class="app_quiz_mcq" href='javascript:quizNextQuestionEvent(value="a")'>A</a>
+        <a class="app_quiz_mcq" href='javascript:quizNextQuestionEvent(value="b")'>B</a>
+        <a class="app_quiz_mcq" href='javascript:quizNextQuestionEvent(value="c")'>C</a>
+        <a class="app_quiz_mcq" href='javascript:quizNextQuestionEvent(value="d")'>D</a>
     </p>
 
     <p class="app_quiz_item" id="quiz_text">
@@ -108,7 +108,7 @@
         if( enabled ) {
 
             bt_submit.innerText = "Next question";
-            bt_submit.href = 'javascript:quizNextQuestionEvent()';
+            bt_submit.href = getCookie( 'temp' );
             bt_submit.style.border = 'none';
             bt_submit.style.backgroundColor = 'black';
             bt_submit.style.color = 'white';
@@ -118,6 +118,7 @@
         }
         else {
 
+            setCookie( 'temp', bt_submit.href );
             bt_submit.innerText = "Can't skip this question";
             bt_submit.href = '#bottom';
             bt_submit.style.border = '0.1em black solid';
@@ -517,9 +518,18 @@
 
     }
 
-    async function quizNextQuestionEvent() {
+    async function quizNextQuestionEvent( value=undefined ) {
 
         // Move to a next question.
+
+        // occasionally i can pass a value here directly from the user input prompt
+        // thus skipping the quizAnswerSaveEvent()
+        if( value!=undefined ) {
+
+            setCookie( 'answer', value );
+            enableQuizNextQuestionButton( true );
+
+        }
 
         // delete entered values
         document.getElementById("quiz_integer_inp").value=null;
