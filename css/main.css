@@ -30,7 +30,7 @@
 
 /*
 .theme-switch {
-    --background_image: url("background_image_day.png");
+    --background_image: url("../images/bg_effect_test.png");
 
 }
 */
@@ -64,15 +64,15 @@
 }
 
 #div1 {
-    background-image: url("background_image_night.png");
+    background-image: url("../images/bg_effect_test.png");
 }
 
 body {
-    background-image: url("background_image_night.png");
+    background-image: url("../images/bg_effect_test.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    background-size: 2700px;
+    background-size: 100%;
 }
 
 h1 {
