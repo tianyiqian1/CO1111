@@ -616,7 +616,16 @@
         // https://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript
         window.scrollTo( 0,0 );
 
-    } // function playerNameSubmitEvent
+    }
+
+    function playerNameChangeRequestEvent() {
+
+        // When player wants to change name.
+
+        eraseCookie( 'player' );
+        changePageState( 'player' );
+
+    }
 
     //---------------------------------------------------------------------------------------------------------------+++
     // Actual code.
