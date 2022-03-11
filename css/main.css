@@ -20,12 +20,12 @@
 /* Dark mode work in progress */
 * {
     --main_colour_light: #00b9bd;
-    --accent_colour1_light: #fb6900;
-    --accent_color2_light: #f63700;
+    --accent_colour1_light: #f96800;
+    --accent_colour2_light: #f63700;
 
-    --main_colour_dark: #00686b;
-    --accent_color1_dark: #6b2c00;
-    --accent_color2_dark: #6b1700;
+    --main_colour_dark: #007e80;
+    --accent_colour1_dark: #fb6900;
+    --accent_colour2_dark: #d62f00;
 }
 
 /*
@@ -36,7 +36,7 @@
 */
 
 .top_nav {
-    background-color: var(--main_colour_light);
+    background-color: var(--main_colour_dark);
     overflow: hidden;
     border-radius: 0.3em;
 }
@@ -52,15 +52,19 @@
 }
 
 .top_nav a:hover {
-    background-color: var(--accent_colour1_light);
+    background-color: var(--accent_colour1_dark);
 }
 
 .top_nav a.active {
-    background-color: var(--accent_color2_light);
+    background-color: var(--accent_colour2_dark);
 }
 
 .top_nav_right {
     float: right;
+}
+
+#div1 {
+    background-image: url("background_image_night.png");
 }
 
 body {
@@ -91,7 +95,7 @@ p {
 
 button {
     border: none;
-    background-color: var(--main_colour_light);
+    background-color: var(--main_colour_dark);
     color: white;
     padding: 16px 32px;
     text-align: center;
@@ -107,8 +111,23 @@ button {
 }
 
 .button:hover {
-    background-color: var(--accent_colour1_light);
+    background-color: var(--accent_colour1_dark);
     padding: 20px 40px;
+}
+
+.nav_button {
+    border: none;
+    background-color: var(--main_colour_dark);
+    color: white;
+    padding: 1px 1px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Open Sans Light";
+    font-size: 30px;
+    border-radius: 0.3em;
+    transition-duration: 0.4s;
+    cursor: pointer;
 }
 
 .container {

@@ -38,7 +38,11 @@ vmax (the larger or vw or vh)
     font-family: "Open Sans Light";
     --main_colour_light: #00b9bd;
     --accent_colour1_light: #fb6900;
-    --accent_color2_light: #f63700
+    --accent_color2_light: #f63700;
+
+    --main_colour_dark: #00686b;
+    --accent_colour1_dark: #6b2c00;
+    --accent_colour2_dark: #6b1700;
 }
 
 body {
@@ -59,7 +63,7 @@ body {
 .app_navi {
     /* all app navigation links*/
     border: none;
-    background-color: var(--main_colour_light);
+    background-color: var(--main_colour_dark);
     color: white;
     padding: 16px 32px;
     text-align: center;
@@ -74,7 +78,7 @@ body {
 }
 
 .app_navi:hover {
-    background-color: var(--accent_colour1_light);
+    background-color: var(--accent_colour1_dark);
 }
 
 .quiz_navi {
@@ -179,7 +183,7 @@ form #quiz {
 }
 #quiz_submit, #player_submit {
 
-    background-color: var(--accent_color2_light);
+    background-color: var(--accent_colour2_dark);
     color: white;
 
     padding: 0.3em;
