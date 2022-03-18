@@ -48,10 +48,10 @@
     </p>
 
     <p class="app_quiz_item" id="quiz_mcq">
-        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("a")'>A</a>
-        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("b")'>B</a>
-        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("c")'>C</a>
-        <a class="app_quiz_mcq" href='javascript:quizAnswerSaveEvent("d")'>D</a>
+        <a class="app_quiz_mcq" href='javascript:quizNextQuestionEvent("a")'>A</a>
+        <a class="app_quiz_mcq" href='javascript:quizNextQuestionEvent("b")'>B</a>
+        <a class="app_quiz_mcq" href='javascript:quizNextQuestionEvent("c")'>C</a>
+        <a class="app_quiz_mcq" href='javascript:quizNextQuestionEvent("d")'>D</a>
     </p>
 
     <p class="app_quiz_item" id="quiz_text">
@@ -499,6 +499,51 @@
 
     } // function startTreasureHunt
 
+    async function sendPlayerLocationEvent( pos ) {
+
+        // Sends player location to the server.
+
+        // Code is adapted from co1111-worksheet15b - Geolocation.pdf.
+
+        // read necessary variables
+        let session = getCookie('session');
+        let latitude = pos.coords.latitude;
+        let longitude = pos.coords.longitude;
+
+        let link = `${URL_ROOT}/location?session=${session}&latitude=${latitude}&longitude=${longitude}`;
+
+        // get json data, handle errors
+        const response = await fetch( link );
+        if( response.status=="ERROR" ) {
+
+            // TODO
+            return;
+
+        } // if response
+        const DATA = await response.json();
+
+        console.log( latitude );
+        console.log( longitude );
+        console.log( DATA );
+
+    }
+
+    function updatePlayerLocationEvent() {
+
+        // Requests player location and sends it to the server.
+
+        // Code is adapted from co1111-worksheet15b - Geolocation.pdf.
+
+        // foolcheck
+        if( !navigator.geolocation ) {
+            alert( "fatal error: the app won't work without geolocation" );
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition( sendPlayerLocationEvent );
+
+    }
+
     function quizAnswerSaveEvent( value ) {
 
         // Saves chosen answer in a cookie
@@ -519,9 +564,21 @@
 
     }
 
-    async function quizNextQuestionEvent() {
+    async function quizNextQuestionEvent( value=undefined ) {
 
         // Move to a next question.
+
+        // update location before submitting an answer
+        updatePlayerLocationEvent();
+
+        // occasionally i can pass a value here directly from the user input prompt
+        // thus skipping the quizAnswerSaveEvent()
+        if( value!=undefined ) {
+
+            setCookie( 'answer', value );
+            enableQuizNextQuestionButton( true );
+
+        }
 
         // delete entered values
         document.getElementById("quiz_integer_inp").value=null;
@@ -608,7 +665,16 @@
         // https://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript
         window.scrollTo( 0,0 );
 
-    } // function playerNameSubmitEvent
+    }
+
+    function playerNameChangeRequestEvent() {
+
+        // When player wants to change name.
+
+        eraseCookie( 'player' );
+        changePageState( 'player' );
+
+    }
 
     //---------------------------------------------------------------------------------------------------------------+++
     // Actual code.
