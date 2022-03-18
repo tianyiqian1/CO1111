@@ -40,9 +40,17 @@ async function populateHeader() {
         bt_name=`<a hidden class='app_navi quiz_navi' href='javascript:playerNameChangeRequestEvent()'>Change player name</a>`;
     }
 
+    let lab_info = "";
+    if( PAGE_STATE=='quiz' ) {
+        // info about current player progress
+        let player = getCookie('player');
+        let score = getCookie('score');
+        lab_info=`<a hidden class='app_navi quiz_navi' href='javascript:showLeaderboardEvent()'>Player ${player} score: ${score}</a>`;
+    }
+
     // assemble
 
-    header.innerHTML = bt_home + bt_reload + bt_stop + bt_name;
+    header.innerHTML = bt_home + bt_reload + bt_stop + bt_name + lab_info;
 
 } // function getChallenges
 
