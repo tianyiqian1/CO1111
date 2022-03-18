@@ -202,11 +202,8 @@
         // get json data, handle errors
         const response = await fetch( link );
         if( response.status=="ERROR" ) {
-
-            // TODO
             return;
-
-        } // if response
+        }
         const DATA = await response.json();
 
         return DATA;
@@ -284,8 +281,6 @@
         // get json data, handle errors
         const response = await fetch( link );
         if( response.status=="ERROR" ) {
-
-            // TODO
             return;
 
         } // if response
@@ -378,8 +373,6 @@
 
             // download metadata
             var DATA = await getQuestion();
-
-            console.log( DATA )
 
             document.getElementById("page_title").innerText = `[${question_iloc+1}/${question_count}] Question`;
             document.getElementById("page_h1").innerHTML = `[${question_iloc+1}/${question_count}]<br>${DATA.questionText}`;
@@ -487,6 +480,29 @@
 
         let DATA = await getChallengeMetadata( link );
 
+        if( DATA.status=='ERROR' ) {
+
+            // display error text
+            let errorText = '';
+            for( let iloc=0; iloc<DATA.errorMessages.length; iloc+=1 ) {
+                errorText += DATA.errorMessages[iloc]+'\n\n';
+            }
+            alert( errorText );
+
+            if( errorText.includes("is already in use (try a different one)") ) {
+                // player name is invalid
+                // help:
+                // https://www.w3schools.com/Jsref/jsref_includes.asp
+
+                // go back to player name selection screen
+                playerNameChangeRequestEvent();
+                return;
+
+            }
+        }
+
+        // everythin is ok, challenge can be started
+
         setCookie( "session", DATA.session );
         setCookie( "question_count", DATA.numOfQuestions );
         setCookie( "question_iloc", 0 );
@@ -583,9 +599,19 @@
         // update location before submitting an answer
         updatePlayerLocationEvent();
 
-        // occasionally i can pass a value here directly from the user input prompt
+        // check whether the answer is acutally missing
+        // occasionally i can pass a value to this function directly from the user input prompt
         // thus skipping the quizAnswerSaveEvent()
-        if( value!=undefined ) {
+        let ans = getCookie('answer');
+
+        if( ans==value==undefined ) {
+
+            alert( `AAAAAAAAA` );
+            // question was skipped
+            var DATA = await sendAnswer( skip=true );
+
+        }
+        else {
 
             // question was answered
 
@@ -598,18 +624,11 @@
                 // help:
                 // https://codecyprus.org/th/guide#answer
 
-                var DATA = await sendAnswer();
-                console.log(DATA);
+                var DATA=await sendAnswer();
 
                 eraseCookie( 'answer' );
 
             }
-
-        }
-        else {
-            // question was skipped
-            var DATA = await sendAnswer( skip=true );
-            console.log(DATA);
 
         }
 
