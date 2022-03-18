@@ -35,8 +35,8 @@
 <form id="quiz" class="app_quiz" hidden>
 
     <p class="app_quiz_item" id="quiz_boolean">
-        <a class="app_quiz_bool" href='javascript:quizAnswerSaveEvent("true")'>True</a>
-        <a class="app_quiz_bool" href='javascript:quizAnswerSaveEvent("false")'>False</a>
+        <a class="app_quiz_bool" href='javascript:quizNextQuestionEvent("true")'>True</a>
+        <a class="app_quiz_bool" href='javascript:quizNextQuestionEvent("false")'>False</a>
     </p>
 
     <p class="app_quiz_item" id="quiz_integer">
@@ -79,7 +79,7 @@
         // The <input> definition already does so.
 
         let v = document.getElementById('quiz_integer_inp').value;
-        quizAnswerSaveEvent(v);
+        enableQuizNextQuestionButton( true, value=v );
     }
 
     function validateNumber() {
@@ -88,7 +88,7 @@
         // The <input> definition already does so.
 
         let v = document.getElementById('quiz_number_inp').value;
-        quizAnswerSaveEvent(v);
+        enableQuizNextQuestionButton( true, value=v );
 
     }
 
@@ -98,10 +98,10 @@
         // The <input> definition already does so.
 
         let v = document.getElementById('quiz_text_inp').value;
-        quizAnswerSaveEvent(v);
+        enableQuizNextQuestionButton( true, value=v );
     }
 
-    function enableQuizNextQuestionButton( enabled ) {
+    function enableQuizNextQuestionButton( enabled,value=undefined ) {
 
         // Changes visual appearance and functionality of quiz submit/skip button.
 
@@ -110,7 +110,7 @@
         if( enabled ) {
 
             bt_submit.innerText = "Next question";
-            bt_submit.href = 'javascript:quizNextQuestionEvent()';
+            bt_submit.href = `javascript:quizNextQuestionEvent(${value})`;
             bt_submit.style.backgroundColor = '#00b9bd';
             bt_submit.style.borderRadius = '1em'
             bt_submit.style.color = 'white';
@@ -247,7 +247,7 @@
 
     }
 
-    async function sendAnswer( skip=false ) {
+    async function sendAnswer( answer, skip=false ) {
 
         // Asks server whether the answer is correct or
         // asks to skip a question.
@@ -272,9 +272,6 @@
         }
 
         // question was answered
-
-        // read necessary variables
-        var answer = getCookie('answer');
 
         link = `${URL_ROOT}/answer?session=${session}&answer=${answer}`;
 
@@ -373,6 +370,7 @@
 
             // download metadata
             var DATA = await getQuestion();
+            console.log( DATA );
 
             document.getElementById("page_title").innerText = `[${question_iloc+1}/${question_count}] Question`;
             document.getElementById("page_h1").innerHTML = `[${question_iloc+1}/${question_count}]<br>${DATA.questionText}`;
@@ -501,11 +499,12 @@
             }
         }
 
-        // everythin is ok, challenge can be started
+        // everything is ok, challenge can be started
 
         setCookie( "session", DATA.session );
         setCookie( "question_count", DATA.numOfQuestions );
         setCookie( "question_iloc", 0 );
+        setCookie( "score", 0 );
 
         changePageState( 'quiz' );
 
@@ -522,9 +521,7 @@
         let retval = confirm( "Abandon challenge?" );
         if( retval ) {
 
-            eraseCookie( "session" );
-            eraseCookie( "numOfQuestions" );
-
+            deleteCookies();
             changePageState( 'player' );
 
         }
@@ -572,26 +569,6 @@
 
     }
 
-    function quizAnswerSaveEvent( value ) {
-
-        // Saves chosen answer in a cookie
-        // and allows to proceed.
-
-        // help:
-        // https://www.w3schools.com/howto/howto_js_remove_class.asp
-
-        setCookie( 'answer', value );
-
-        // allow to proceed to next question
-        enableQuizNextQuestionButton( true );
-
-        // scroll to bottom
-        // help:
-        // https://stackoverflow.com/questions/1145850/how-to-get-height-of-entire-document-with-javascript
-        window.scrollTo( $(window).height(), 0 );
-
-    }
-
     async function quizNextQuestionEvent( value=undefined ) {
 
         // Move to a next question.
@@ -599,24 +576,18 @@
         // update location before submitting an answer
         updatePlayerLocationEvent();
 
-        // check whether the answer is acutally missing
-        // occasionally i can pass a value to this function directly from the user input prompt
-        // thus skipping the quizAnswerSaveEvent()
-        let ans = getCookie('answer');
+        let allowToProceed = false;
 
-        if( ans==value==undefined ) {
+        if( value==undefined ) {
 
-            alert( `AAAAAAAAA` );
             // question was skipped
-            var DATA = await sendAnswer( skip=true );
+            var DATA = await sendAnswer( undefined, skip=true );
+            allowToProceed = true;
 
         }
         else {
 
             // question was answered
-
-            setCookie( 'answer', value );
-            enableQuizNextQuestionButton( true );
 
             // is the answer correct?
             if( URL_ROOT==URL_ROOT_REAL ) {
@@ -624,36 +595,55 @@
                 // help:
                 // https://codecyprus.org/th/guide#answer
 
-                var DATA=await sendAnswer();
-
-                eraseCookie( 'answer' );
+                var DATA = await sendAnswer( value );
+                if( DATA.correct ) { allowToProceed=true; }
 
             }
 
         }
 
-        // delete entered values
+        // update score
+        let score = parseInt( getCookie('score') );
+        setCookie( 'score', score+DATA.scoreAdjustment );
+
+        // clear entered values
         document.getElementById("quiz_integer_inp").value=null;
         document.getElementById("quiz_number_inp").value=null;
         document.getElementById("quiz_text_inp").value=null;
 
         // move to a next question
-        question_iloc = parseInt( getCookie('question_iloc') );
-        question_count = parseInt( getCookie('question_count') );
-        if( question_iloc+1 > question_count ) {
-            // answered all the questions
-            changePageState('leaderboard');
+        if( allowToProceed ) {
+            // only correctly answered/skipped questions
+            // allow player to proceed
+
+            // increment question_iloc (it is ZERO-based)
+            question_iloc = parseInt( getCookie('question_iloc') );
+            question_iloc += 1;
+            setCookie( 'question_iloc', question_iloc );
+
+            // make sure not to exceed number of available questions
+            question_count = parseInt( getCookie('question_count') );
+            if( question_iloc == question_count ) {
+                // answered all the questions
+                changePageState('leaderboard');
+                return;
+            }
+
+            // show new question
+
+            // scroll to top
+            // help:
+            // https://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript
+            window.scrollTo( 0,0 );
+
+            showElements();
+
             return;
+
         }
 
-        setCookie( 'question_iloc', question_iloc+1 );
-
-        // scroll to top
-        // help:
-        // https://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript
-        window.scrollTo( 0,0 );
-
-        showElements();
+        // indicate that the answer was wrong
+        alert( DATA.message );
 
     } // function quizNextQuestionEvent
 
@@ -745,10 +735,5 @@ session of treasure hunt. It should have at minimum these features:
  It allows to view the list of available treasure hunts,
  It allows to start a new session and answer questions,
  It informs the user when they finish the session and shows the score.
-
-2022.02.28
-changed complex per-answer cookies to a single cookie named 'answer'
-added object ids to form <input> items
-renamed quizNextQuestionButton -> enableQuizNextQuestionButton
 
  -->
