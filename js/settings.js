@@ -58,6 +58,46 @@ function eraseCookie(name) {
 
 }
 
+function deleteCookies( name=undefined ) {
+
+    // Content-unaware function that deletes a cookie.
+
+    // The code is used from publicly available snippet https://stackoverflow.com/questions/179355/clearing-all-cookies-with-javascript.
+
+    if( name==undefined ) {
+        // simply delete all cookies
+        document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+        return
+    }
+
+    // delete all cookies with the same name
+
+    // help:
+    // https://www.tutorialspoint.com/How-can-I-delete-all-cookies-with-JavaScript
+    // https://stackoverflow.com/questions/10593013/delete-cookie-by-name
+
+    document.cookie = name + '=;expires='+ new Date().toUTCString();
+
+    /*
+
+
+    let cookies = document.cookie.split(";");
+
+
+
+    for( let iloc=0; iloc<cookies.length; iloc+=1 ) {
+        let cookie_name = cookies[iloc].split("=");
+        if( cookie_name==name ) {
+            alert( cookie_name );
+
+            document.cookie = cookie_name+" =; expires="
+        }
+    }
+
+    */
+
+}
+
 //-------------------------------------------------------------------------------------------------------------------+++
 // 2022.02.24
 // added cookie deletion function
