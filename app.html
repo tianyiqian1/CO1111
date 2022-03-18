@@ -235,7 +235,6 @@
         if( URL_ROOT==URL_ROOT_REAL ) {
             // this is a real treasure hunt
 
-            console.log( DATA );
             return DATA;
 
         }
@@ -251,16 +250,36 @@
 
     }
 
-    async function sendAnswer() {
+    async function sendAnswer( skip=false ) {
 
-        // Asks server whether the answer is correct.
+        // Asks server whether the answer is correct or
+        // asks to skip a question.
+
+        var session = getCookie('session');
+
+        if( skip ) {
+
+            // question was skipped
+
+            link = `${URL_ROOT}/skip?session=${session}`;
+
+            // get json data, handle errors
+            const response = await fetch( link );
+            if( response.status=="ERROR" ) {
+                return;
+            }
+
+            const DATA = await response.json();
+            return DATA;
+
+        }
+
+        // question was answered
 
         // read necessary variables
-        var session = getCookie('session');
         var answer = getCookie('answer');
 
         link = `${URL_ROOT}/answer?session=${session}&answer=${answer}`;
-        console.log( link );
 
         // get json data, handle errors
         const response = await fetch( link );
@@ -272,7 +291,6 @@
         } // if response
         const DATA = await response.json();
 
-        console.log( DATA );
         return DATA;
 
     }
@@ -354,23 +372,24 @@
         }
         else if( PAGE_STATE=='quiz' ) {
 
-            // download metadata
-            var DATA = await getQuestion();
-
             // read necessary variables
             let question_count = getCookie('question_count');
             let question_iloc = parseInt( getCookie('question_iloc') );
+
+            // download metadata
+            var DATA = await getQuestion();
+
+            console.log( DATA )
 
             document.getElementById("page_title").innerText = `[${question_iloc+1}/${question_count}] Question`;
             document.getElementById("page_h1").innerHTML = `[${question_iloc+1}/${question_count}]<br>${DATA.questionText}`;
 
             document.getElementById("quiz").hidden=false;
 
-            console.log( DATA );
-
             let bt_submit = document.getElementById("quiz_submit");
             if( DATA.canBeSkipped ) {
                 enableQuizNextQuestionButton( true );
+                bt_submit.innerText = 'Skip';
             }
             else {
                 enableQuizNextQuestionButton( false );
@@ -468,9 +487,6 @@
 
         let DATA = await getChallengeMetadata( link );
 
-        console.log( 'AAAAAA' );
-        console.log( DATA );
-
         setCookie( "session", DATA.session );
         setCookie( "question_count", DATA.numOfQuestions );
         setCookie( "question_iloc", 0 );
@@ -522,10 +538,6 @@
         } // if response
         const DATA = await response.json();
 
-        console.log( latitude );
-        console.log( longitude );
-        console.log( DATA );
-
     }
 
     function updatePlayerLocationEvent() {
@@ -575,8 +587,29 @@
         // thus skipping the quizAnswerSaveEvent()
         if( value!=undefined ) {
 
+            // question was answered
+
             setCookie( 'answer', value );
             enableQuizNextQuestionButton( true );
+
+            // is the answer correct?
+            if( URL_ROOT==URL_ROOT_REAL ) {
+
+                // help:
+                // https://codecyprus.org/th/guide#answer
+
+                var DATA = await sendAnswer();
+                console.log(DATA);
+
+                eraseCookie( 'answer' );
+
+            }
+
+        }
+        else {
+            // question was skipped
+            var DATA = await sendAnswer( skip=true );
+            console.log(DATA);
 
         }
 
@@ -584,18 +617,6 @@
         document.getElementById("quiz_integer_inp").value=null;
         document.getElementById("quiz_number_inp").value=null;
         document.getElementById("quiz_text_inp").value=null;
-
-        // is the answer correct?
-        if( URL_ROOT==URL_ROOT_REAL ) {
-
-            // help:
-            // https://codecyprus.org/th/guide#answer
-
-            var DATA = await sendAnswer();
-
-        }
-
-        eraseCookie( 'answer' );
 
         // move to a next question
         question_iloc = parseInt( getCookie('question_iloc') );
