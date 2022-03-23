@@ -98,6 +98,34 @@ function deleteCookies( name=undefined ) {
 
 }
 
+async function asyncRequest( link ) {
+
+    // Context-unaware function for sending asynchronous
+    // requests and handling
+    // request failures.
+
+    // The code is adapted from worksheet "CO1111-w15-lec-NetworkingAndProgrammableWeb.pdf".
+
+    // help:
+    // https://javascript.info/fetch
+    // https://dmitripavlutin.com/javascript-fetch-async-await/
+
+    const response = await fetch( link );
+
+    if( response.status=="ERROR" ) {
+
+        // handle request errors
+
+        return;
+
+    }
+
+    // data returned by api can contain other errors
+    const DATA = await response.json();
+    return DATA;
+
+}
+
 //-------------------------------------------------------------------------------------------------------------------+++
-// 2022.02.24
-// added cookie deletion function
+// 2022.03.23
+// added context-unaware asyncRequest()

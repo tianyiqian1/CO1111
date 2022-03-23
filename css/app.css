@@ -37,12 +37,17 @@ vmax (the larger or vw or vh)
 @media (prefers-color-scheme: light) {
     .app_navi {background-color: var(--main_colour_light)}
     .app_navi:hover {background-color: var(--accent_colour1_light)}
+    .misc {background-image: linear-gradient( var(--accent_colour1_light), var(--main_colour_light) )}
     .app_quiz_bool {background-color: var(--main_colour_light)}
     .app_quiz_bool:hover {background-color: var(--accent_colour1_light)}
     .app_quiz_mcq {background-color: var(--main_colour_light)}
     .app_quiz_mcq:hover {background-color: var(--accent_colour1_light)}
     #quiz_submit, #player_submit {background-color: var(--main_colour_light)}
-    body {background-image: url("background_image_day.png")}
+    body {background-image: linear-gradient( var(--accent_colour1_light), var(--main_colour_light) );
+        background-position: center;
+        background-size: 100vmax 100vmax;
+
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -58,13 +63,18 @@ vmax (the larger or vw or vh)
 
 * {
     font-family: "Open Sans Light";
+    /*
     --main_colour_light: #00b9bd;
     --accent_colour1_light: #fb6900;
     --accent_color2_light: #f63700;
 
+    --main_colour_light: #92c800;
+    --accent_colour1_light: #fb6900;
+    --accent_colour2_light: #f63700;
+
     --main_colour_dark: #00686b;
     --accent_colour1_dark: #6b2c00;
-    --accent_colour2_dark: #6b1700;
+    --accent_colour2_dark: #6b1700;*/
 }
 
 body {
@@ -94,7 +104,7 @@ body {
     margin: 6px 6px;
     border-radius: 2em;
     transition-duration: 0.4s;
-    cursor: pointer;
+    /*cursor: pointer;*/
     text-transform: uppercase;
 }
 
@@ -110,7 +120,7 @@ body {
     margin: 6px 6px;
     border-radius: 50%;
     transition-duration: 0.4s;
-    cursor: pointer;
+    /*cursor: pointer;*/
     text-transform: uppercase;
 }
 
@@ -127,7 +137,7 @@ body {
     margin: 6px 6px;
     border-radius: 2em;
     transition-duration: 0.4s;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 
 .quiz_navi {
@@ -178,6 +188,17 @@ form #quiz {
     https://stackoverflow.com/questions/57440112/input-fields-are-too-wide
     */
     width: 50%;
+}
+
+.misc {
+
+    /*
+    highlight players name and score count
+    */
+
+    font-family: Consolas;
+    border-radius: 18pt;
+
 }
 
 #quiz_submit, .unavailable {

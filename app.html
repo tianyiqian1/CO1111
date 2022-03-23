@@ -19,6 +19,7 @@
 <h1 id="page_h1">Here will be page header1</h1>
 
 <ul id="challenges" hidden></ul>
+<p class="misc" id="leads" hidden></p>
 
 <form id="player" class="app_quiz" hidden>
 
@@ -111,7 +112,7 @@
 
             bt_submit.innerText = "Next question";
             bt_submit.href = `javascript:quizNextQuestionEvent(${value})`;
-            bt_submit.style.backgroundColor = '#00b9bd';
+            bt_submit.style.backgroundColor = 'var(--main_colour_light)';
             bt_submit.style.borderRadius = '1em'
             bt_submit.style.color = 'white';
             bt_submit.style.animation = 'none';
@@ -140,24 +141,12 @@
 
         // The code is adapted from worksheet "CO1111-w15-lec-NetworkingAndProgrammableWeb.pdf".
 
-        // help:
-        // https://javascript.info/fetch
-        // https://dmitripavlutin.com/javascript-fetch-async-await/
-
-        // get json data, handle errors
-        const response = await fetch( URL_ROOT+"/list" );
-        if( response.status=="ERROR" ) {
-
-            // TODO
-            return;
-
-        } // if response
-        const DATA = await response.json();
+        // download metadata
+        const DATA = await asyncRequest( URL_ROOT+"/list" );
 
         // populate challenge list
 
         let challengeList = document.getElementById("challenges");
-
         let treasureHunts = DATA.treasureHunts;
 
         // iterate treasure hunts
@@ -170,22 +159,16 @@
             // create a link to start this treasure hunt
             if( URL_ROOT==URL_ROOT_REAL ) {
                 // this is a real treasure hunt
-
-                // TODO
-
                 let playerName = getCookie( 'player' );
-
-                link = URL_ROOT + "/start?player=" + playerName + "&app=" + TEAM_NAME + "App&treasure-hunt-id=" + treasureHunts[iloc].uuid;
+                let link = `${URL_ROOT}/start?player=${playerName}&app=${TEAM_NAME}App&treasure-hunt-id=${treasureHunts[iloc].uuid}`;
                 item.innerHTML = "<a class='app_navi' href='javascript:treasureHuntStartedEvent(\"" + link + "\")'>" + treasureHunts[iloc].name + "</a>"
             }
             else {
-                // this is a test treasure hunt
-
-                link = URL_ROOT + "/start" //?player=" // player emulates errors
+                // im using test api
+                let link = URL_ROOT + "/start" //?player=" // player emulates errors
                 // help:
                 // https://www.tutorialspoint.com/JavaScript-function-in-href-vs-onClick
                 item.innerHTML = "<a class='app_navi' href='javascript:treasureHuntStartedEvent(\"" + link + "\")'>" + treasureHunts[iloc].name + "</a>"
-
             }
 
             // assemble
@@ -194,98 +177,6 @@
         } // for iloc
 
     } // function getChallenges
-
-    async function getChallengeMetadata( link ) {
-
-        // Obtains relevant data from treasure hunt link.
-
-        // get json data, handle errors
-        const response = await fetch( link );
-        if( response.status=="ERROR" ) {
-            return;
-        }
-        const DATA = await response.json();
-
-        return DATA;
-
-    } // function startTreasureHunt
-
-    async function getQuestion() {
-
-        // Obtains current question.
-
-        // read necessary variables
-        var session = getCookie('session');
-
-        link = `${URL_ROOT}/question?session=${session}`;
-
-        // get json data, handle errors
-        const response = await fetch( link );
-        if( response.status=="ERROR" ) {
-
-            // TODO
-            return;
-
-        } // if response
-        const DATA = await response.json();
-
-        if( URL_ROOT==URL_ROOT_REAL ) {
-            // this is a real treasure hunt
-
-            return DATA;
-
-        }
-        else {
-            // this is a test treasure hunt
-
-            // help:
-            // https://stackoverflow.com/questions/37555031/why-does-json-return-a-promise
-            // https://stackoverflow.com/questions/64164994/is-there-a-way-to-save-promise-result-as-a-variable
-            return DATA;
-
-        }
-
-    }
-
-    async function sendAnswer( answer, skip=false ) {
-
-        // Asks server whether the answer is correct or
-        // asks to skip a question.
-
-        var session = getCookie('session');
-
-        if( skip ) {
-
-            // question was skipped
-
-            link = `${URL_ROOT}/skip?session=${session}`;
-
-            // get json data, handle errors
-            const response = await fetch( link );
-            if( response.status=="ERROR" ) {
-                return;
-            }
-
-            const DATA = await response.json();
-            return DATA;
-
-        }
-
-        // question was answered
-
-        link = `${URL_ROOT}/answer?session=${session}&answer=${answer}`;
-
-        // get json data, handle errors
-        const response = await fetch( link );
-        if( response.status=="ERROR" ) {
-            return;
-
-        } // if response
-        const DATA = await response.json();
-
-        return DATA;
-
-    }
 
     function hideElements() {
 
@@ -318,7 +209,7 @@
         }
         else if( PAGE_STATE=='leaderboard' ) {
 
-            // TODO
+            document.getElementById("leads").hidden=true;
 
         }
         else {
@@ -367,13 +258,16 @@
             // read necessary variables
             let question_count = getCookie('question_count');
             let question_iloc = parseInt( getCookie('question_iloc') );
+            let session = getCookie('session');
+            let score = getCookie('score');
+            let player = getCookie('player');
 
             // download metadata
-            var DATA = await getQuestion();
-            console.log( DATA );
+            let link = `${URL_ROOT}/question?session=${session}`;
+            let DATA = await asyncRequest(link);
 
-            document.getElementById("page_title").innerText = `[${question_iloc+1}/${question_count}] Question`;
-            document.getElementById("page_h1").innerHTML = `[${question_iloc+1}/${question_count}]<br>${DATA.questionText}`;
+            document.getElementById("page_title").innerText = `[${question_iloc}/${question_count}] Question`;
+            document.getElementById("page_h1").innerHTML = `<span class="misc">${player}</span>'s score: <span class="misc">${score}</span><br><span class="misc">[${question_iloc}/${question_count}]</span><br>${DATA.questionText}`;
 
             document.getElementById("quiz").hidden=false;
 
@@ -442,6 +336,10 @@
             document.getElementById("page_title").innerText = `Leaderboard`;
             document.getElementById("page_h1").innerHTML = `Leaderboard`;
 
+            document.getElementById("leads").hidden=false;
+
+            showLeaderboardEvent();
+
         }
         else {
 
@@ -476,7 +374,7 @@
 
         // Is triggered by providing a player name after clicking a treasure hunt.'
 
-        let DATA = await getChallengeMetadata( link );
+        let DATA = await asyncRequest( link );
 
         if( DATA.status=='ERROR' ) {
 
@@ -497,20 +395,32 @@
                 return;
 
             }
+            else if( errorText.includes("not active right now") ) {
+                // this treasure hunt is unavailable
+                deleteCookies();
+                changePageState( 'list' );
+                return;
+            }
+            else {
+                // very unlikely scenario, should be prevented
+                console.log( 'DANGER' );
+                deleteCookies();
+                return;
+            }
         }
 
         // everything is ok, challenge can be started
 
         setCookie( "session", DATA.session );
         setCookie( "question_count", DATA.numOfQuestions );
-        setCookie( "question_iloc", 0 );
+        setCookie( "question_iloc", 1 ); // it would be easier to use 1-based question numbering
         setCookie( "score", 0 );
 
         changePageState( 'quiz' );
 
     } // function startTreasureHunt
 
-    function treasureHuntCancelledEvent() {
+    function treasureHuntCancelledEvent( ask=true ) {
 
         // Is triggered by cancelling a treasure hunt.
 
@@ -518,7 +428,14 @@
         // help:
         // https://javascript.info/alert-prompt-confirm
 
-        let retval = confirm( "Abandon challenge?" );
+        var retval=false;
+        if( ask ) {
+            retval = confirm( "Abandon challenge?" );
+        }
+        else {
+            retval=true;
+        }
+
         if( retval ) {
 
             deleteCookies();
@@ -526,7 +443,7 @@
 
         }
 
-    } // function startTreasureHunt
+    }
 
     async function sendPlayerLocationEvent( pos ) {
 
@@ -539,17 +456,12 @@
         let latitude = pos.coords.latitude;
         let longitude = pos.coords.longitude;
 
+        // download metadata
         let link = `${URL_ROOT}/location?session=${session}&latitude=${latitude}&longitude=${longitude}`;
+        const DATA = await asyncRequest(link);
 
-        // get json data, handle errors
-        const response = await fetch( link );
-        if( response.status=="ERROR" ) {
-
-            // TODO
-            return;
-
-        } // if response
-        const DATA = await response.json();
+        console.log( 'sent location, what next? the answer was as follows:' );
+        console.log( DATA );
 
     }
 
@@ -569,19 +481,32 @@
 
     }
 
-    async function quizNextQuestionEvent( value=undefined ) {
+    async function quizNextQuestionEvent( answer=undefined ) {
 
         // Move to a next question.
 
-        // update location before submitting an answer
+        //--------------------+++
+        // Definitions.
+
+        var DATA = undefined;
+
+        //--------------------+++
+        // Actual code.
+
+        // request location update before submitting an answer
         updatePlayerLocationEvent();
 
-        let allowToProceed = false;
+        // read/define necessary variables
+        const session = getCookie('session');
 
-        if( value==undefined ) {
+        var allowToProceed = false;
+
+        if( answer==undefined ) {
 
             // question was skipped
-            var DATA = await sendAnswer( undefined, skip=true );
+
+            let link = `${URL_ROOT}/skip?session=${session}`;
+            DATA = await asyncRequest(link);
             allowToProceed = true;
 
         }
@@ -589,32 +514,44 @@
 
             // question was answered
 
-            // is the answer correct?
             if( URL_ROOT==URL_ROOT_REAL ) {
+
+                // api is real, i want to know whether
+                // my answer was correct or not - otherwise
+                // api wont let me proceed to the next question
 
                 // help:
                 // https://codecyprus.org/th/guide#answer
 
-                var DATA = await sendAnswer( value );
+                let link = `${URL_ROOT}/answer?session=${session}&answer=${answer}`;
+                DATA = await asyncRequest(link);
                 if( DATA.correct ) { allowToProceed=true; }
+                else {
+                    // question was answered incorrectly
+                    // api wont let me proceed unless i nail the question
+
+                }
 
             }
 
         }
 
-        // update score
+        // update score cookie
         let score = parseInt( getCookie('score') );
         setCookie( 'score', score+DATA.scoreAdjustment );
 
-        // clear entered values
-        document.getElementById("quiz_integer_inp").value=null;
-        document.getElementById("quiz_number_inp").value=null;
-        document.getElementById("quiz_text_inp").value=null;
-
         // move to a next question
+        if( !allowToProceed ) {
+            // cant move, update score
+            showElements(); }
         if( allowToProceed ) {
             // only correctly answered/skipped questions
             // allow player to proceed
+
+            // clear entered values
+            document.getElementById("quiz_integer_inp").value=null;
+            document.getElementById("quiz_number_inp").value=null;
+            document.getElementById("quiz_text_inp").value=null;
 
             // increment question_iloc (it is ZERO-based)
             question_iloc = parseInt( getCookie('question_iloc') );
@@ -623,7 +560,7 @@
 
             // make sure not to exceed number of available questions
             question_count = parseInt( getCookie('question_count') );
-            if( question_iloc == question_count ) {
+            if( question_iloc > question_count ) {
                 // answered all the questions
                 changePageState('leaderboard');
                 return;
@@ -703,6 +640,35 @@
 
         eraseCookie( 'player' );
         changePageState( 'player' );
+
+    }
+
+    async function showLeaderboardEvent() {
+
+        const session = getCookie( 'session' );
+        const size = 42;
+
+        let link = `${URL_ROOT}/leaderboard?session=${session}&sorted&hasPrize=false&size=${size}`
+        const DATA = await asyncRequest(link);
+        console.log( DATA );
+
+        // populate list
+
+        let dest = document.getElementById("leads");
+
+        let bound = size;
+        if( bound>DATA.leaderboard.length ) { bound=DATA.leaderboard.length }
+
+        // iterate treasure hunts
+        for( let iloc=0; iloc<bound; iloc+=1 ) {
+
+            // create empty list item
+            let text = `${DATA.leaderboard[iloc].player}: ${DATA.leaderboard[iloc].score}<br>`
+
+            // assemble
+            dest.innerHTML+=text;
+
+        }
 
     }
 
