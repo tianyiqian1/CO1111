@@ -2,6 +2,13 @@
 
 Here is the record of team meetings and discussions.
 
+## 2022.03.18 11:37
+Attendance: *all* except *Konstantinos*.
+Topics:
+- decided on the testing details
+- Tianyi will handle the user acceptance and heuristics testing
+- Anna will handle the unit testing
+
 ## 2022.03.10 14:05
 Attendance: *all* except *Konstantinos*.
 Topics:
