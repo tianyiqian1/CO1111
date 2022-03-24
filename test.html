@@ -1,13 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Test Results</title>
     <link rel="stylesheet" href="css/main.css" />
 </head>
-<body>
 
+<script src="https://kit.fontawesome.com/1f36b060ea.js" crossorigin="anonymous"></script>
+
+<div class="top_nav">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="news.html"><i class="fa-solid fa-newspaper"></i> News</a>
+    <a href="about.html"><i class="fa-solid fa-circle-question"></i> About</a>
+    <a href="contact.html"><i class="fa-solid fa-message"></i> Contact</a>
+    <a class="active" href="test.html"><i class="fa-solid fa-microscope"></i> Test Results</a>
+</div>
+
+<body>
+<h1>User Acceptance</h1>
+<table>
+    <tr>
+        <th>TEST CASES</th>
+        <th>User A</th>
+        <th>User B</th>
+        <th>User C</th>
+        <th>User D</th>
+        <th>User E</th>
+        <th>Average</th>
+    </tr>
+    <tr>
+        <td>The questions are not confusing</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>The website has a well-designed UI</td>
+        <td>4</td>
+        <td>4</td>
+        <td>3</td>
+        <td>2</td>
+        <td>3</td>
+        <td>3.2</td>
+    </tr>
+    <tr>
+        <td>The website has a good aesthetic</td>
+        <td>4</td>
+        <td>5</td>
+        <td>5</td>
+        <td>4</td>
+        <td>5</td>
+        <td>4.8</td>
+    </tr>
+    <tr>
+        <td>The website is easy to navigate</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+        <td>4</td>
+        <td>5</td>
+        <td>4.8</td>
+    </tr>
+    <tr>
+        <td>Necessary information can be found easily</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>How likely will you visit the website again?</td>
+        <td>4</td>
+        <td>3</td>
+        <td>3</td>
+        <td>2</td>
+        <td>1</td>
+        <td>2.6</td>
+    </tr>
+</table>
+
+<h1>Heuristic</h1>
+<table>
+    <tr>
+        <th>TEST CASES</th>
+        <th>Yes</th>
+        <th>No</th>
+    </tr>
+    <tr>
+        <td>Can you see the current quiz progress?</td>
+        <td>5</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>Can you see the current score?</td>
+        <td>5</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>Can you see your username?</td>
+        <td>5</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>Do you have the necessary controls over the quiz? E.g. skipping unwanted questions</td>
+        <td>4</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>Are the buttons where you expect them to be?</td>
+        <td>4</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>Does miss clicks happen often?</td>
+        <td>5</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>Were you able to enter the wrong value in certain text boxes? E.g. entering texts in a number-only text box</td>
+        <td>0</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>Is the information displayed on the screen more than you can handle in a short amount of time?</td>
+        <td>0</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>Were you able to navigate between pages easily?</td>
+        <td>5</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>Do the error messages help you find a solution?</td>
+        <td>5</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>Do the solutions suggested by the error messages work?</td>
+        <td>2</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>Can you find answers to the questions easily?</td>
+        <td>5</td>
+        <td>0</td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <th>PROBLEMS</th>
+        <th>Heuristic Violated</th>
+        <th>Task</th>
+        <th>Where</th>
+        <th>How</th>
+        <th>Severity Rating</th>
+    </tr>
+    <tr>
+        <td>Sometimes the "NEXT QUESTION" button does not work</td>
+        <td>Help users recognize, diagnose, and recover from errors</td>
+        <td>Progressing to the next question</td>
+        <td>Quiz page</td>
+        <td>Correct answer entered but cannot proceed to the next question</td>
+        <td>Major usability problem</td>
+    </tr>
+    <tr>
+        <td>Sometimes the name enter by the user in the beginning of the quiz is not accepted when there is no reason not to</td>
+        <td>Help users recognize, diagnose, and recover from errors</td>
+        <td>Entering username</td>
+        <td>Username page</td>
+        <td>Certain names are not accepted but sometimes they are accepted</td>
+        <td>Usability catastrophe</td>
+    </tr>
+    <tr>
+        <td>When the username is not accepted, the error message does not help very much</td>
+        <td>Help users recognize, diagnose, and recover from errors</td>
+        <td>Entering username</td>
+        <td>Username page</td>
+        <td>Error message says "user already exits" but the name is not on the leader board</td>
+        <td>Major usability problem</td>
+    </tr>
+    <tr>
+        <td>Some buttons have a different shape or colour</td>
+        <td>Aesthetic</td>
+        <td>Perform actions</td>
+        <td>Quiz page</td>
+        <td>When progressing to the next question</td>
+        <td>Cosmetic problem</td>
+    </tr>
+</table>
 </body>
+
 </html>
 
 <!--

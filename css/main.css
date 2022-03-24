@@ -48,8 +48,8 @@ https://www.w3schools.com/cssref/pr_background-image.asp
     body {background-image: linear-gradient( var(--accent_colour1_light), var(--main_colour_light) );
         background-position: center;
         background-size: 100vmax 100vmax;
-
     }
+    table {background-color: var(--main_colour_light)}
 }
 
 @media (prefers-color-scheme: dark) {
@@ -60,6 +60,7 @@ https://www.w3schools.com/cssref/pr_background-image.asp
     body {background-image: url("background_image_night.png")}
     button {background-color: var(--main_colour_dark)}
     .button:hover {background-color: var(--accent_colour1_dark)}
+    table {background-color: var(--main_colour_dark)}
 }
 
 .top_nav {
@@ -118,6 +119,22 @@ p {
     color: white;
     text-align: center;
     font-family: "Open Sans Light";
+}
+
+th, td {
+    padding: 2px 10px
+}
+
+table{
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Open Sans Light";
+    font-size: large;
+    margin: 4px 4px;
+    border-radius: 1em;
 }
 
 button {
