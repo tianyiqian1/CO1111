@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <link rel="stylesheet" href="css/main.css"/>
+      <meta charset="UTF-8">
+      <title>Home</title>
+   </head>
+   <script src="https://kit.fontawesome.com/1f36b060ea.js" crossorigin="anonymous"></script>
+   <body>
+      <div class="top_nav" id="myTopnav">
+         <a class="active" href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+         <a href="news.html"><i class="fa-solid fa-newspaper"></i> News</a>
+         <a href="about.html"><i class="fa-solid fa-circle-question"></i> About</a>
+         <a href="contact.html"><i class="fa-solid fa-message"></i> Contact</a>
+         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+         <i class="fa fa-bars"></i> </a>
+      </div>
+      <h1>Welcome to The Treasure Hunt</h1>
+      <div class="center-align">
+         <p><a class="app_navi" href='app.html'>
+            <button class="button"><i class="fa-solid fa-play"></i> START</button>
+            </a>
+      </div>
+      <script>
+         function myFunction() {
+           var x = document.getElementById("myTopnav");
+           if (x.className === "top_nav") {
+             x.className += " responsive";
+           } else {
+             x.className = "top_nav";
+           }
+         }
+      </script>
+   </body>
+</html>

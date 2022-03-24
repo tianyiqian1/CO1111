@@ -1,0 +1,243 @@
+/*
+
+All styles for app.html.
+Some styles are inherited from main.css.
+
+The code is adapted from worksheet "co1111-worksheet-3-Intro to CSS.pdf".
+
+help:
+https://stackoverflow.com/a/19814948
+vw (% of the viewport width)
+vh (% of the viewport height)
+vi (1% of the viewport size in the direction of the root element's inline axis)
+vb (1% of the viewport size in the direction of the root element's block axis)
+vmin (the smaller of vw or vh)
+vmax (the larger or vw or vh)
+1 v* is equal to 1% of the initial containing block.
+
+*/
+
+@font-face {
+    font-family: "Open Sans";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+}
+
+@font-face {
+    font-family: "Open Sans Light";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: "Open Sans Bold";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+    font-weight: 700;
+}
+
+@media (prefers-color-scheme: light) {
+    .app_navi {background-color: var(--main_colour_light)}
+    .app_navi:hover {background-color: var(--accent_colour1_light)}
+    .app_quiz_bool {background-color: var(--main_colour_light)}
+    .app_quiz_bool:hover {background-color: var(--accent_colour1_light)}
+    .app_quiz_mcq {background-color: var(--main_colour_light)}
+    .app_quiz_mcq:hover {background-color: var(--accent_colour1_light)}
+    #quiz_submit, #player_submit {background-color: var(--main_colour_light)}
+    body {background-image: url("background_image_day.png")}
+}
+
+@media (prefers-color-scheme: dark) {
+    .app_navi {background-color: var(--main_colour_dark)}
+    .app_navi:hover {background-color: var(--accent_colour1_dark)}
+    .app_quiz_bool {background-color: var(--main_colour_dark)}
+    .app_quiz_bool:hover {background-color: var(--accent_colour1_dark)}
+    .app_quiz_mcq {background-color: var(--main_colour_dark)}
+    .app_quiz_mcq:hover {background-color: var(--accent_colour1_dark)}
+    #quiz_submit, #player_submit {background-color: var(--main_colour_dark)}
+    body {background-image: url("background_image_night.png")}
+}
+
+* {
+    font-family: "Open Sans Light";
+    --main_colour_light: #00b9bd;
+    --accent_colour1_light: #fb6900;
+    --accent_color2_light: #f63700;
+
+    --main_colour_dark: #00686b;
+    --accent_colour1_dark: #6b2c00;
+    --accent_colour2_dark: #6b1700;
+}
+
+body {
+    width: 100vmin;
+    margin: auto;
+    text-align: center;
+    font-size: 17px;
+    /* overflow-wrap: break-spaces; */
+}
+
+#app_header {
+    /*
+    This block is populated with app navigation - see "a #app_navi {...}"
+    */
+    display: block;
+}
+@media only screen and (max-width: 667px) {
+#app_header{
+    display: flex;
+    flex-direction: column;
+}
+}
+.app_quiz_bool {
+    border: none;
+    color: white;
+    padding: 14px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Open Sans";
+    font-size: 20px;
+    margin: 6px 6px;
+    border-radius: 2em;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.app_quiz_mcq {
+    border: none;
+    color: white;
+    padding: 14px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Open Sans";
+    font-size: 20px;
+    margin: 6px 6px;
+    border-radius: 50%;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.app_navi {
+    /* all app navigation links*/
+    border: none;
+    color: white;
+    padding: 14px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Open Sans Light";
+    font-size: 17px;
+    margin: 6px 6px;
+    border-radius: 2em;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.quiz_navi {
+
+}
+
+/*
+.quiz_navi:hidden {
+    display: none;
+}
+*/
+
+ul #challenges, li {
+    /*
+    all challenges list items
+    help:
+    https://www.w3schools.com/css/css_list.asp
+    */
+    list-style-type: none;
+    margin: 15px;
+}
+
+
+h1 #page_h1 {
+    /*top-level header in app.html
+    */
+}
+
+form #quiz {
+    /*general quiz styling, actual elements will be added after finishing the javascript
+    */
+}
+
+.app_quiz_item {
+
+}
+
+.app_quiz_item input {
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    background-color: white;
+    display: inline-block;
+    text-transform: lowercase;
+    text-align: center;
+    /*
+    help:
+    https://stackoverflow.com/questions/57440112/input-fields-are-too-wide
+    */
+    width: 50%;
+}
+
+#quiz_submit, .unavailable {
+
+    /*
+    border: 0.1em black solid;
+    background-color: transparent;
+    color: rgba( 0,0,0, 0.5 );
+
+    padding: 0.3em;
+    text-decoration: none;
+    margin: 0.5em;
+    font-size: 2em;
+
+    display: block;
+
+    text-transform: uppercase;
+
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+    */
+
+}
+
+#quiz_submit, #player_submit {
+    color: white;
+    padding: 0.3em;
+    text-decoration: none;
+    margin: 0.5em;
+    font-size: 2em;
+    display: block;
+    text-transform: uppercase;
+}
+
+@keyframes shake {
+    /*
+    The code is used from publicly available snippet https://www.w3schools.com/howto/howto_css_shake_image.asp
+    */
+
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+/*
+
+2022.02.24
+updated
+
+*/

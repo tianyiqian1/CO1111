@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <link rel="stylesheet" href="css/main.css"/>
+      <meta charset="UTF-8">
+      <title>Contact</title>
+   </head>
+   <script src="https://kit.fontawesome.com/1f36b060ea.js" crossorigin="anonymous"></script>
+   <body>
+      <div class="top_nav" id="myTopnav">
+         <a class="active" href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+         <a href="news.html"><i class="fa-solid fa-newspaper"></i> News</a>
+         <a href="about.html"><i class="fa-solid fa-circle-question"></i> About</a>
+         <a href="contact.html"><i class="fa-solid fa-message"></i> Contact</a>
+         <div class="top_nav_right">
+            <a href="#dark_mode"><i class="fa-solid fa-circle-half-stroke"></i> </a>
+         </div>
+         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+         <i class="fa fa-bars"></i></a>
+      </div>
+      <section class="contact_section">
+         <h1>For general and web related enquiries:
+            <a style="color: white; font-family: 'Open Sans Bold'" href="tqian1@uclan.ac.uk">Tianyi Qian</a>
+         </h1>
+         <h1>For API and quiz related enquiries:
+            <a style="color: white; font-family: 'Open Sans Bold'" href="aanikina@uclan.ac.uk">Anna Anikina</a>
+         </h1>
+         <h1>For mobile related enquiries:
+            <a style="color: white; font-family: 'Open Sans Bold'" href="kfinikaridis@uclan.ac.uk">Konstantinos Finikaridis</a>
+         </h1>
+      </section>
+      <script>
+         function myFunction() {
+           var x = document.getElementById("myTopnav");
+           if (x.className === "top_nav") {
+             x.className += " responsive";
+           } else {
+             x.className = "top_nav";
+           }
+         }
+      </script>
+   </body>
+</html>

@@ -1,0 +1,220 @@
+/* Font family = "Open Sans" */
+/* Colour scheme = teal (#00b9bd), dark teal (#f63700) and orange (#fb6900) */
+
+* {
+    --main_colour_light: #00b9bd;
+    --accent_colour1_light: #f96800;
+    --accent_colour2_light: #f63700;
+
+    --main_colour_dark: #007e80;
+    --accent_colour1_dark: #fb6900;
+    --accent_colour2_dark: #d62f00;
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+}
+
+@font-face {
+    font-family: "Open Sans Light";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: "Open Sans Bold";
+    src: url("OpenSans-VariableFont_wdth,wght.ttf");
+    font-weight: 700;
+}
+
+@media (prefers-color-scheme: light) {
+    .top_nav {background-color: var(--main_colour_light)}
+    .nav_button {background-color: var(--main_colour_light)}
+    .top_nav a:hover {background-color: var(--accent_colour1_light)}
+    .top_nav a:active {background-color: var(--accent_colour2_light)}
+    body {background-image: url("background_image_day.png")}
+    button {background-color: var(--main_colour_light)}
+    .button:hover {background-color: var(--accent_colour1_light)}
+}
+
+@media (prefers-color-scheme: dark) {
+    .top_nav {background-color: var(--main_colour_dark)}
+    .nav_button {background-color: var(--main_colour_dark)}
+    .top_nav a:hover {background-color: var(--accent_colour1_dark)}
+    .top_nav a:active {background-color: var(--accent_colour2_dark)}
+    body {background-image: url("background_image_night.png")}
+    button {background-color: var(--main_colour_dark)}
+    .button:hover {background-color: var(--accent_colour1_dark)}
+}
+
+.top_nav {
+    overflow: hidden;
+    border-radius: 2em;
+}
+
+.top_nav a {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: "Open Sans Light";
+}
+
+.nav_button {
+    border: none;
+    color: white;
+    padding: 1px 1px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Open Sans Light";
+    font-size: 30px;
+    border-radius: 1em;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.top_nav_right {
+    float: right;
+}
+
+body {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: 2700px;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    font-family: "Open Sans Light";
+}
+
+h2 {
+    color: white;
+    text-align: center;
+    font-family: "Open Sans Bold";
+}
+
+p {
+    color: white;
+    text-align: center;
+    font-family: "Open Sans Light";
+}
+
+button {
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Open Sans Light";
+    font-size: xxx-large;
+    letter-spacing: 10px;
+    margin: 4px 4px;
+    border-radius: 1em;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button:hover {
+    padding: 20px 40px;
+}
+
+.container {
+    width: 100%;
+    float: left;
+}
+
+.video-center-align {
+    max-width: 640px;
+    max-height: 370px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.center-align {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.ig-container {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* responsive css  start*/
+
+.video-container {
+    overflow: hidden;
+    position: relative;
+    width:100%;
+}
+
+.video-container::after {
+    padding-top: 56.25%;
+    display: block;
+    content: '';
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.top_nav .icon {
+    display: none;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .top_nav a:not(:first-child) {display: none;}
+    .top_nav a.icon {
+      float: right;
+      display: block;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .top_nav.responsive {position: relative;}
+    .top_nav.responsive .icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .top_nav.responsive a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+  }
+@media only screen and (max-width: 667px) {
+    button {
+        font-size: 20px;
+        letter-spacing: 3px;
+    }
+.contact_section h1{
+    font-size: 25px;
+}
+#quiz_submit {
+    font-size: 20px !important;
+    letter-spacing: 3px;
+}
+.app_quiz_bool {
+    padding: 5px 20px !important;
+    font-size: 20px !important;
+}
+
+}
+/* responsive css  end*/
