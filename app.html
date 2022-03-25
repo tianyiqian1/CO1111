@@ -99,7 +99,7 @@
         // The <input> definition already does so.
 
         let v = document.getElementById('quiz_text_inp').value;
-        enableQuizNextQuestionButton( true, value=v );
+        enableQuizNextQuestionButton( true, value=`"${v}"` );
     }
 
     function enableQuizNextQuestionButton( enabled,value=undefined ) {
