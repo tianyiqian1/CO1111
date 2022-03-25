@@ -196,6 +196,73 @@
         <td>Cosmetic problem</td>
     </tr>
 </table>
+
+<h1>Testing Leaderboard</h1>
+<table id="test-results-table">
+    <tr>
+        <th>Name</th>
+        <th>Score</th>
+        <th>Time</th>
+    </tr>
+</table>
+
+
+<script src="js/settings.js"></script>
+<script>
+
+    //---------------------------------------------------------------------------------------------------------------+++
+    // Definitions.
+
+    let testPairs = [
+        { x: 1, expected: 1 },
+        { x: 2, expected: 1 },
+        { x: 4, expected: 3 },
+        { x: 8, expected: 21 },
+        { x: 32, expected: 2178309 }
+    ];
+
+    async function runTests() {
+
+        // The code is reused from the CO1111-w19-lec-Testing.pdf worksheet.
+
+        //const session = getCookie( 'session' );
+        let session = "ag9nfmNvZGVjeXBydXNvcmdyFAsSB1Nlc3Npb24YgICA4OnngggM";
+
+        // download data
+        //let link = `${URL_ROOT_TEST}/leaderboard?session=${session}&test`;
+        let link = `${URL_ROOT_TEST}/leaderboard?test`;
+        const DATA = await asyncRequest(link);
+        console.log( DATA );
+
+        // populate table
+
+        let options = { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
+            second: '2-digit' };
+        let html = ""; // used to include HTML code for the table rows
+        for( const entry of DATA.leaderboard ) {
+
+            let date = new Date(entry['completionTime']);
+            let formattedDate = date.toLocaleDateString("en-UK", options);
+
+            html += "<tr>" +
+                "<td>" + entry['player'] + "</td>" +
+                "<td>" + entry['score'] + "</td>" +
+                "<td>" + formattedDate + "</td>" +
+                "</tr>";
+        }
+
+        let leaderboardElement = document.getElementById('test-results-table'); // table
+        leaderboardElement.innerHTML += html; // append generated HTML to existing
+    }
+
+    //---------------------------------------------------------------------------------------------------------------+++
+    // Actual code.
+
+    runTests();
+
+</script>
+
+
 </body>
 
 </html>
